@@ -50,6 +50,27 @@ class TestAVLNode(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, n_two, "left_height", 0)
         self.assertRaises(AttributeError, setattr, n_two, "balance_factor", -1)
 
+    def test_operators(self) -> None:
+        n_two, _, n_three = self.nodes
+        two, one, three = self.vals
+
+        self.assertEqual(n_two, two)
+        self.assertEqual(n_two, Node(2))
+
+        self.assertGreater(n_two, one)
+        self.assertGreater(n_two, Node(1))
+        self.assertFalse(n_two > 10)
+
+        self.assertLess(n_two, three)
+        self.assertLess(n_two, n_three)
+        self.assertFalse(n_two < 0)
+
+        self.assertRaises(TypeError, operator.lt, n_two, "3")
+        self.assertRaises(TypeError, operator.lt, n_two, Node("3"))
+
+        self.assertRaises(TypeError, operator.gt, n_two, "1")
+        self.assertRaises(TypeError, operator.gt, n_two, Node("1"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
