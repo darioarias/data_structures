@@ -103,6 +103,32 @@ class TestBSTNode(unittest.TestCase):
         self.assertRaises(TypeError, operator.lt, n_str, n_one)
         self.assertRaises(TypeError, operator.gt, n_str, n_one)
 
+    def test_iter(self) -> None:
+        """Test to make sure iter dunder works as expected"""
+        one, two, three = self.vals
+        n_one, n_two, n_three = self.nodes
+
+        n_two.left = n_one
+        n_two.right = n_three
+
+        val, left, right = n_two
+        assert isinstance(left, Node)
+        assert isinstance(right, Node)
+
+        self.assertEqual(val, two)
+        self.assertEqual(left.val, one)
+        self.assertEqual(right.val, three)
+
+        self.assertIs(left, n_one)
+        self.assertIs(right, n_three)
+
+        empty_node = Node(0)
+        val, left, right = empty_node
+
+        self.assertIsInstance(val, int)
+        self.assertIs(left, None)
+        self.assertIs(right, None)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
