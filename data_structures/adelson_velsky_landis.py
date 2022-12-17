@@ -7,7 +7,11 @@ from .nodes import AVLTreeNode as Node
 
 
 class AVL(Generic[CT]):
-    pass
+    def __init__(self, __items: Optional[Iterable[CT]] = None) -> None:
+        self.root: Optional[Node[CT]] = None
+
+        if __items is not None:
+            self.root = self.from_iter(__items).root
 
 
 __all__ = ["AVL"]
