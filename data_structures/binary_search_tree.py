@@ -42,6 +42,15 @@ class BinarySearchTree(Generic[CT]):
         _temp_bst.root = construct_tree(items, 0)
         return _temp_bst
 
+    @staticmethod
+    def from_iter(items: Iterable[CT]) -> BinarySearchTree[CT]:
+        """Uses the builtin insert method to create a tree from an iterable"""
+        _temp_bst = BinarySearchTree[CT]()
+        for item in items:
+            _temp_bst.insert(item)
+
+        return _temp_bst
+
     def insert(self, value: CT) -> None:
         """Inserts a value into the tree"""
 
