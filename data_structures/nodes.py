@@ -128,3 +128,6 @@ class AVLTreeNode(Generic[CT]):
 
     def __str__(self) -> str:
         return f"{str(self.value)}"
+
+    def __iter__(self) -> Iterator[Union[CT, AVLTreeNode[CT] | None]]:
+        yield from (self.value, self.left, self.right)
