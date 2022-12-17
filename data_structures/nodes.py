@@ -63,3 +63,7 @@ class BinarySearchTreeNode(Generic[CT]):
             return self.value > __o
         except TypeError:
             return NotImplemented
+
+
+class AVLTreeNode(Generic[CT]):
+    pass
