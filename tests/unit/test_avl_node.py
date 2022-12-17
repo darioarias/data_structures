@@ -71,6 +71,24 @@ class TestAVLNode(unittest.TestCase):
         self.assertRaises(TypeError, operator.gt, n_two, "1")
         self.assertRaises(TypeError, operator.gt, n_two, Node("1"))
 
+    def test_iter(self) -> None:
+        n_two, n_one, n_three = self.nodes
+        two, *_ = self.vals
+
+        val, left, right = n_two
+
+        self.assertIs(left, None)
+        self.assertIs(right, None)
+        self.assertEqual(val, two)
+
+        n_two.left = n_one
+        n_two.right = n_three
+
+        _, left, right = n_two
+
+        self.assertIs(left, n_one)
+        self.assertIs(right, n_three)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
