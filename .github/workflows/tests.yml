@@ -2,7 +2,7 @@ name: Run Python Tests
 
 on: 
   pull_request: 
-    branches: [ main ]
+    branches: [ main, data-structures ]
 
   push:
     branches: [ data-structures ]
