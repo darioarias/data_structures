@@ -76,3 +76,19 @@ class AVLTreeNode(Generic[CT]):
         self.left = left
         self.right = right
         self.height = 0
+
+    @property
+    def left_height(self) -> int:
+        if self.left is not None:
+            return self.left.height
+        return -1
+
+    @property
+    def right_height(self) -> int:
+        if self.right is not None:
+            return self.right.height
+        return -1
+
+    @property
+    def balance_factor(self) -> int:
+        return self.left_height - self.right_height
