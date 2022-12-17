@@ -52,5 +52,18 @@ class BinarySearchTree(Generic[CT]):
 
         self.root = remove_helper(self.root, value)
 
+    def __contains__(self, item: CT) -> bool:
+        def contains(root: Optional[Node[CT]], value: CT) -> bool:
+            if root is None:
+                return False
+            if root.value == value:
+                return True
+            if root < value:
+                return contains(root.right, value)
+            else:
+                return contains(root.left, value)
+
+        return contains(self.root, item)
+
 
 __all__ = ["BinarySearchTree"]
