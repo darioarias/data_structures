@@ -75,6 +75,31 @@ class TestBSTNode(unittest.TestCase):
 
         self.assertIs(node_3.left, node_4)
 
+    def test_operators(self) -> None:
+        one, two, three = self.vals
+        n_one, n_two, n_three = self.nodes
+
+        self.assertLess(n_two, n_three)  # lt operator btw Node and Node
+        self.assertFalse(n_three < n_two)  # lt operator btw Node and Node
+        self.assertGreater(n_two, n_one)  # gt operator btw Node and Node
+        self.assertFalse(n_one > n_two)  # gt operator btw Node and Node
+        self.assertEqual(n_two, n_two)  # eq opeartor btw Node and Node
+        self.assertNotEqual(n_two, n_one)  # eq operator btw Node and Node
+
+        self.assertEqual(n_one, one)  # eq btw Node[int], int
+        self.assertFalse(n_one == two)  # eq btw Node[int], int
+        self.assertLess(n_two, three)  # lt btw Node[int], int
+        self.assertFalse(n_two < one)  # lt btw Node[int], int
+        self.assertGreater(n_two, one)  # gt btw Node[int], int
+        self.assertFalse(n_two > three)  # gt btw Node[int], int
+
+        self.assertIs(n_two.left, n_one)  # testing the 'is' operator
+        self.assertIs(n_two.right, n_three)  # testing the 'is' operator
+
+        n_str: Node[str] = Node("1")
+        self.assertRaises(TypeError, operator.lt, n_str, n_one)
+        self.assertRaises(TypeError, operator.gt, n_str, n_one)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
