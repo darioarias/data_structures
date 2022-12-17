@@ -101,6 +101,8 @@ class TestAVLNode(unittest.TestCase):
         temp = Node_(two)
         self.assertEqual(repr(temp), f"Node_({two!r})")
 
+    # TODO: map 'val' to 'value' and test it
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
