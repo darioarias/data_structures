@@ -20,7 +20,7 @@ class TestAVLNode(unittest.TestCase):
         self.assertEqual(n_two.value, two)
         n_two.value = 20
         self.assertEqual(n_two.value, 20)
-        # TODO: overwrite n_two.val and test it
+        self.assertEqual(n_two.val, 20)
 
         self.assertIs(n_two.left, None)
         self.assertIs(n_two.right, None)
@@ -100,8 +100,6 @@ class TestAVLNode(unittest.TestCase):
 
         temp = Node_(two)
         self.assertEqual(repr(temp), f"Node_({two!r})")
-
-    # TODO: map 'val' to 'value' and test it
 
 
 if __name__ == "__main__":
