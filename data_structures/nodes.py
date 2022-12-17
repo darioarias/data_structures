@@ -81,6 +81,14 @@ class AVLTreeNode(Generic[CT]):
         self.height = 0
 
     @property
+    def val(self) -> CT:
+        return self.value
+
+    @val.setter
+    def val(self, value: CT) -> None:
+        self.value = value
+
+    @property
     def left_height(self) -> int:
         if self.left is not None:
             return self.left.height
