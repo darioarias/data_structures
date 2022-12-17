@@ -28,5 +28,29 @@ class BinarySearchTree(Generic[CT]):
 
         self.root = insert_helper(self.root, value)
 
+    def remove(self, value: CT) -> None:
+        """Removes a given value from the tree"""
+
+        def remove_helper(root: Optional[Node[CT]], value: CT) -> Optional[Node[CT]]:
+            if root is None:
+                return None
+
+            if root == value:
+                if root.left is None and root.right is None:
+                    return None
+                if root.left is None:
+                    return root.right
+                if root.right is None:
+                    return root.left
+                root.value = root.right.min.value
+                root.right = remove_helper(root.right, root.value)
+            elif value < root:
+                root.left = remove_helper(root.left, value)
+            else:
+                root.right = remove_helper(root.right, value)
+            return root
+
+        self.root = remove_helper(self.root, value)
+
 
 __all__ = ["BinarySearchTree"]
