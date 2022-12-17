@@ -89,6 +89,18 @@ class TestAVLNode(unittest.TestCase):
         self.assertIs(left, n_one)
         self.assertIs(right, n_three)
 
+    def test_repr_str(self) -> None:
+        n_two, *_ = self.nodes
+        two, *_ = self.vals
+
+        self.assertEqual(str(n_two), str(two))
+
+        class Node_(Node):
+            pass
+
+        temp = Node_(two)
+        self.assertEqual(repr(temp), f"Node_({two!r})")
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
