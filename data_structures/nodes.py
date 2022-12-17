@@ -40,6 +40,9 @@ class BinarySearchTreeNode(Generic[CT]):
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self.value!r})"
 
+    def __str__(self) -> str:
+        return f"{str(self.val)}"
+
     def __lt__(self, __o: Union[CT, BinarySearchTreeNode[CT]]) -> bool:
         try:
             if isinstance(__o, BinarySearchTreeNode):
