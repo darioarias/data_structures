@@ -92,3 +92,9 @@ class AVLTreeNode(Generic[CT]):
     @property
     def balance_factor(self) -> int:
         return self.left_height - self.right_height
+
+    @property
+    def min(self) -> AVLTreeNode[CT]:
+        if self.left is None:
+            return self
+        return self.left.min
