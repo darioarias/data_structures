@@ -98,3 +98,27 @@ class AVLTreeNode(Generic[CT]):
         if self.left is None:
             return self
         return self.left.min
+
+    def __eq__(self, __o: Union[CT, AVLTreeNode[CT]]) -> bool:
+        try:
+            if isinstance(__o, AVLTreeNode):
+                return self.value == __o.value
+            return self.value == __o
+        except TypeError:
+            return NotImplemented
+
+    def __lt__(self, __o: Union[CT, AVLTreeNode[CT]]) -> bool:
+        try:
+            if isinstance(__o, AVLTreeNode):
+                return self.value < __o.value
+            return self.value < __o
+        except TypeError:
+            return NotImplemented
+
+    def __gt__(self, __o: Union[CT, AVLTreeNode[CT]]) -> bool:
+        try:
+            if isinstance(__o, AVLTreeNode):
+                return self.value > __o.value
+            return self.value > __o
+        except TypeError:
+            return NotImplemented
