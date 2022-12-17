@@ -14,6 +14,34 @@ class BinarySearchTree(Generic[CT]):
             self.root = self.from_iter(__items).root
             return None
 
+    @staticmethod
+    def from_mapped_list(items: list[Union[CT, None]]) -> BinarySearchTree[CT]:
+        """Uses indexies to creat a tree from a list.
+        This algorithms assumes that values are already in the correct order.
+        """
+        left_child: Callable[[int], int] = lambda index: 2 * index + 1
+        right_child: Callable[[int], int] = lambda index: 2 * index + 2
+
+        def construct_tree(
+            items: list[Union[CT, None]], index: int
+        ) -> Optional[Node[CT]]:
+            if index >= len(items):
+                return None
+
+            item = items[index]
+            if item is None:
+                return None
+
+            root: Node[CT] = Node(item)
+            root.left = construct_tree(items, left_child(index))
+            root.right = construct_tree(items, right_child(index))
+
+            return root
+
+        _temp_bst: BinarySearchTree[CT] = BinarySearchTree()
+        _temp_bst.root = construct_tree(items, 0)
+        return _temp_bst
+
     def insert(self, value: CT) -> None:
         """Inserts a value into the tree"""
 
