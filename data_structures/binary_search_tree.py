@@ -7,7 +7,12 @@ from .nodes import BinarySearchTreeNode as Node
 
 
 class BinarySearchTree(Generic[CT]):
-    pass
+    def __init__(self, __items: Optional[Iterable[CT]] = None) -> None:
+        self.root: Optional[Node[CT]] = None
+
+        if __items is not None:
+            self.root = self.from_iter(__items).root
+            return None
 
 
 __all__ = ["BinarySearchTree"]
