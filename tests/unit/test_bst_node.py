@@ -79,6 +79,9 @@ class TestBSTNode(unittest.TestCase):
         one, two, three = self.vals
         n_one, n_two, n_three = self.nodes
 
+        n_two.left = n_one
+        n_two.right = n_three
+
         self.assertLess(n_two, n_three)  # lt operator btw Node and Node
         self.assertFalse(n_three < n_two)  # lt operator btw Node and Node
         self.assertGreater(n_two, n_one)  # gt operator btw Node and Node
