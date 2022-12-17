@@ -131,3 +131,6 @@ class AVLTreeNode(Generic[CT]):
 
     def __iter__(self) -> Iterator[Union[CT, AVLTreeNode[CT] | None]]:
         yield from (self.value, self.left, self.right)
+
+
+__all__ = ["BinarySearchTreeNode", "AVLTreeNode"]
