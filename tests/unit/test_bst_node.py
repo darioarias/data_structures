@@ -129,6 +129,8 @@ class TestBSTNode(unittest.TestCase):
         self.assertIs(left, None)
         self.assertIs(right, None)
 
+    # TODO: test repr and str - first update cls to support str
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
