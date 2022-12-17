@@ -66,4 +66,13 @@ class BinarySearchTreeNode(Generic[CT]):
 
 
 class AVLTreeNode(Generic[CT]):
-    pass
+    def __init__(
+        self,
+        value: CT,
+        left: Optional[AVLTreeNode[CT]] = None,
+        right: Optional[AVLTreeNode[CT]] = None,
+    ) -> None:
+        self.value = value
+        self.left = left
+        self.right = right
+        self.height = 0
