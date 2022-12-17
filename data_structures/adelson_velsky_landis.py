@@ -67,5 +67,16 @@ class AVL(Generic[CT]):
 
         return pivot
 
+    def _right_rotate(self, node: Node[CT]) -> Node[CT]:
+        assert isinstance(node.left, Node)
+
+        pivot = node.left
+        node.left = pivot.right
+        pivot.right = node
+        node.height = max(node.left_height, node.right_height) + 1
+        pivot.height = max(pivot.left_height, pivot.right_height) + 1
+
+        return pivot
+
 
 __all__ = ["AVL"]
