@@ -129,7 +129,16 @@ class TestBSTNode(unittest.TestCase):
         self.assertIs(left, None)
         self.assertIs(right, None)
 
-    # TODO: test repr and str - first update cls to support str
+    def test_repr_str(self) -> None:
+        n_one, *_ = self.nodes
+        one, *_ = self.vals
+
+        self.assertEqual(str(n_one), str(one))
+
+        class Node_(Node):
+            pass
+
+        self.assertEqual(repr(Node_(one)), f"Node_({one!r})")
 
 
 if __name__ == "__main__":
