@@ -29,5 +29,30 @@ class AVL(Generic[CT]):
 
         self.root = insert_helper(self.root, value)
 
+    def remove(self, value: CT) -> None:
+        def remove_helper(node: Optional[Node[CT]], value: Any) -> Optional[Node[CT]]:
+            if node is None:
+                return None
+
+            if value == node:
+                if node.left is None and node.right is None:
+                    return None
+                if node.right is None:
+                    return node.left
+                if node.left is None:
+                    return node.right
+                node.value = node.right.min.value
+                node.right = remove_helper(node.right, node.value)
+            elif value < node:
+                node.left = remove_helper(node.left, value)
+            else:
+                node.right = remove_helper(node.right, value)
+
+            balanced = self._balanced(node)
+            balanced.height = max(balanced.left_height, balanced.right_height) + 1
+            return balanced
+
+        self.root = remove_helper(self.root, value)
+
 
 __all__ = ["AVL"]
