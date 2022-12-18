@@ -84,5 +84,11 @@ class AVL(Generic[CT]):
         node.right = self._right_rotate(node.right)
         return self._left_rotate(node)
 
+    def _left_right_rotate(self, node: Node[CT]) -> Node[CT]:
+        if node.left is None:
+            return node
+        node.left = self._left_rotate(node.left)
+        return self._right_rotate(node)
+
 
 __all__ = ["AVL"]
