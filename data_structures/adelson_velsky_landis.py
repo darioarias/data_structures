@@ -90,5 +90,18 @@ class AVL(Generic[CT]):
         node.left = self._left_rotate(node.left)
         return self._right_rotate(node)
 
+    def _balanced(self, node: Node[CT]) -> Node[CT]:
+        match node.balance_factor:
+            case 2:
+                if node.left is None or node.left.balance_factor != -1:
+                    return self._right_rotate(node)
+                return self._left_right_rotate(node)
+            case -2:
+                if node.right is None or node.right.balance_factor != 1:
+                    return self._left_rotate(node)
+                return self._right_left_rotate(node)
+            case _:
+                return node
+
 
 __all__ = ["AVL"]
