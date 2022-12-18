@@ -54,5 +54,18 @@ class AVL(Generic[CT]):
 
         self.root = remove_helper(self.root, value)
 
+    # Class-level helpers / Private methods
+
+    def _left_rotate(self, node: Node[CT]) -> Node[CT]:
+        assert isinstance(node.right, Node)
+
+        pivot = node.right
+        node.right = pivot.left
+        pivot.left = node
+        node.height = max(node.left_height, node.right_height) + 1
+        pivot.height = max(pivot.left_height, pivot.right_height) + 1
+
+        return pivot
+
 
 __all__ = ["AVL"]
