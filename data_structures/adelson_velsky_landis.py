@@ -150,5 +150,19 @@ class AVL(Generic[CT]):
 
         return diagram(self.root)
 
+    def __contains__(self, value: CT) -> bool:
+        def contains(root: Optional[Node[CT]], value: CT) -> bool:
+            if root is None:
+                return False
+            if root == value:
+                return True
+
+            if value < root:
+                return contains(root.left, value)
+            else:
+                return contains(root.right, value)
+
+        return contains(self.root, value)
+
 
 __all__ = ["AVL"]
