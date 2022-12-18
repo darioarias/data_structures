@@ -76,6 +76,13 @@ class AVL(Generic[CT]):
         populate_tree(items, 0, _avl)
         return _avl
 
+    @staticmethod
+    def from_iter(items: Iterable[CT]) -> AVL:
+        _temp_avl = AVL()
+        for item in items:
+            _temp_avl.insert(item)
+        return _temp_avl
+
     # Helpers/Private methods
 
     def _left_rotate(self, node: Node[CT]) -> Node[CT]:
