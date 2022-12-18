@@ -54,6 +54,28 @@ class AVL(Generic[CT]):
 
         self.root = remove_helper(self.root, value)
 
+    # static methods
+
+    @staticmethod
+    def from_list(items: list[CT]) -> AVL:
+        """Takes a list and tries to map the value on to a tree.
+        Note that the tree may rotate and hinder the list order."""
+
+        left_child: Callable[[int], int] = lambda index: 2 * index + 1
+        right_child: Callable[[int], int] = lambda index: 2 * index + 2
+
+        def populate_tree(items: list[CT], index: int, tree: AVL[CT]) -> None:
+            if index >= len(items) or items[index] is None:
+                return None
+
+            tree.insert(items[index])
+            populate_tree(items, left_child(index), tree)
+            populate_tree(items, right_child(index), tree)
+
+        _avl = AVL[CT]()
+        populate_tree(items, 0, _avl)
+        return _avl
+
     # Helpers/Private methods
 
     def _left_rotate(self, node: Node[CT]) -> Node[CT]:
