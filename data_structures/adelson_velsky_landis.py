@@ -103,5 +103,23 @@ class AVL(Generic[CT]):
             case _:
                 return node
 
+    def __str__(self) -> str:
+        def diagram(
+            node: Optional[Node[CT]], top: str = "", root: str = "", bottom: str = ""
+        ) -> str:
+            """This algorithm is based on an implementation by Károly Lőrentey in his book [Optimizing Collections](https://www.objc.io/books/optimizing-collections/)"""
+            if node is None:
+                return root + "None\n"
+            if node.left is None and node.right is None:
+                return root + f"{node.value}\n"
+            return (
+                diagram(node.right, top + "  ", top + "┌─", top + "│ ")
+                + root
+                + f"{str(node)}\n"
+                + diagram(node.left, bottom + "│ ", bottom + "└─", bottom + "  ")
+            )
+
+        return diagram(self.root)
+
 
 __all__ = ["AVL"]
