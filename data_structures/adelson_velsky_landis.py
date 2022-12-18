@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Generic, Iterable, Optional
+from typing import Any, Callable, Generic, Iterable, Iterator, Optional
 
 from ._protocols import CT
 from .nodes import AVLTreeNode as Node
@@ -163,6 +163,23 @@ class AVL(Generic[CT]):
                 return contains(root.right, value)
 
         return contains(self.root, value)
+
+    def __iter__(self) -> Iterator[Node[CT]]:
+        if self.root is None:
+            return
+
+        from collections import deque
+
+        queue = deque([self.root])
+        while queue:
+            current = queue.popleft()
+            yield current
+
+            if current.left is not None:
+                queue.append(current.left)
+
+            if current.right is not None:
+                queue.append(current.right)
 
 
 __all__ = ["AVL"]
