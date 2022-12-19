@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import typing
 
+from .nodes import DoublyLinkedListNode as DLLNode
 from .nodes import SinglyLinkedListNode as SLLNode
 
 T = typing.TypeVar("T")
@@ -251,6 +252,12 @@ class DoublyLinkedList(typing.Generic[T]):
             if node == __item:
                 return True
         return False
+
+    def __reversed__(self) -> typing.Iterator[DLLNode[T]]:
+        current = self._tail
+        while current:
+            yield current
+            current = current.previous
 
 
 __all__ = ["SinglyLinkedList"]
