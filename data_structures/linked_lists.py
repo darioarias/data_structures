@@ -111,5 +111,20 @@ class SinglyLinkedList(typing.Generic[T]):
                 return True
         return False
 
+    def __reversed__(self) -> typing.Iterator[SLLNode[T]]:
+        def _empt_itr() -> typing.Iterator[SLLNode[T]]:
+            yield from ()
+
+        def _reverse(node: SLLNode[T]) -> typing.Iterator[SLLNode[T]]:
+            if node.next is None:
+                yield node
+            else:
+                yield from _reverse(node.next)
+                yield node
+
+        if self._head is None:
+            return _empt_itr()
+        return _reverse(self._head)
+
 
 __all__ = ["SinglyLinkedList"]
