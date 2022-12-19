@@ -170,5 +170,17 @@ class DoublyLinkedList(typing.Generic[T]):
         assert isinstance(self._tail.previous, DLLNode)
         self._tail.previous.next = self._tail
 
+    def insert(self, after: DLLNode[T], value: T) -> None:
+        """Adds a value after a particular list node."""
+        assert isinstance(after, DLLNode), "after must be of type Node"
+
+        if after is self._tail:
+            return self.append(value)
+
+        _, next, _ = after
+        # assert isinstance(next, DLLNode)
+        after.next = DLLNode[T](value, next, after)
+        next.previous = after.next
+
 
 __all__ = ["SinglyLinkedList"]
