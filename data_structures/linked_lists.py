@@ -150,5 +150,15 @@ class DoublyLinkedList(typing.Generic[T]):
             for item in __items:
                 self.append(item)
 
+    def push(self, value: T) -> None:
+        """Adds a value at the front of the list."""
+        self._head = DLLNode[T](value, self._head)
+
+        if self._head.next is not None:
+            self._head.next.previous = self._head
+
+        if self._tail is None:
+            self._tail = self._head
+
 
 __all__ = ["SinglyLinkedList"]
