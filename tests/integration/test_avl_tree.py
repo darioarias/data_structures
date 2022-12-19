@@ -34,6 +34,30 @@ class TestAVLTree(unittest.TestCase):
         for value in tree:
             self.assertIn(str(value), init_list)
 
+    def test_inserting(self) -> None:
+        emp_tree = Tree()
+
+        self.assertEqual(self.tree_len(emp_tree), 0)
+
+        emp_tree.insert(10)
+        self.assertEqual(self.tree_len(emp_tree), 1)
+
+        assert emp_tree.root is not None
+        self.assertIs(emp_tree.root.left, None)
+        self.assertIs(emp_tree.root.right, None)
+
+        emp_tree.insert(11)
+        emp_tree.insert(12)
+
+        self.assertEqual(emp_tree.root.val, 11)
+        self.assertEqual(emp_tree.root.left, 10)
+        self.assertEqual(emp_tree.root.right, 12)
+        self.assertEqual(self.tree_len(emp_tree), 3)
+
+        reverse_queue = [9, 6, 4, 8, 5, 2, 0, 7, 1, 3]
+        for val, *_ in Tree(x for x in range(10)):
+            self.assertEqual(val, reverse_queue.pop())
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
