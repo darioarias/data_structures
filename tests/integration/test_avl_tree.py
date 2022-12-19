@@ -58,6 +58,47 @@ class TestAVLTree(unittest.TestCase):
         for val, *_ in Tree(x for x in range(10)):
             self.assertEqual(val, reverse_queue.pop())
 
+    def test_removing(self) -> None:
+        tree = Tree(x for x in range(10))
+        self.assertEqual(self.tree_len(tree), 10)
+
+        tree.remove(8)
+        tree.remove(7)
+
+        assert tree.root is not None
+        self.assertEqual(tree.root.right, 5)
+
+        assert tree.root.right is not None
+        self.assertEqual(tree.root.right.right, 9)
+
+        tree_len = self.tree_len(tree)
+        for num in range(12):
+            found: bool = False
+            if num in tree:
+                found = True
+
+            tree.remove(
+                num
+            )  # implicitly tests for when a value that doesn't exist is removed
+
+            if found:
+                self.assertEqual(self.tree_len(tree), tree_len - 1)
+                tree_len -= 1
+
+        self.assertIs(tree.root, None)
+        self.assertEqual(self.tree_len(tree), 0)
+
+        in_tree = [x for x in range(1, 10, 2)]
+        out_of_tree = [x for x in range(2, 10, 2)]
+
+        tree = Tree(in_tree)
+
+        self.assertEqual(self.tree_len(tree), len(in_tree))
+
+        for val, *_ in tree:
+            self.assertFalse(val in out_of_tree)
+            self.assertTrue(val in in_tree)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
