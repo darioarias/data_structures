@@ -193,6 +193,16 @@ class DoublyLinkedListNode(
     ) -> DoublyLinkedListNode[T]:
         return tuple.__new__(cls, (value, next, previous))
 
+    def __init__(
+        self,
+        value: T,
+        next: Optional[DoublyLinkedListNode[T]] = None,
+        previous: Optional[DoublyLinkedListNode[T]] = None,
+    ) -> None:
+        self.value = value
+        self.next = next
+        self.previous = previous
+
 
 __all__ = [
     "BinarySearchTreeNode",
