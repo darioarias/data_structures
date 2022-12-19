@@ -203,6 +203,14 @@ class DoublyLinkedListNode(
         self.next = next
         self.previous = previous
 
+    @property
+    def val(self) -> T:
+        return self.value
+
+    @val.setter
+    def val(self, value: T) -> None:
+        self.value = value
+
 
 __all__ = [
     "BinarySearchTreeNode",
