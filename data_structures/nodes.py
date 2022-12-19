@@ -167,5 +167,13 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
     def __iter__(self) -> Iterator[Union[T, Optional[SinglyLinkedListNode[T]]]]:
         yield from (self.value, self.next)
 
+    def __eq__(self, __o: Union[T, SinglyLinkedListNode[T]]) -> bool:
+        try:
+            if isinstance(__o, SinglyLinkedListNode):
+                return self.value == __o.value
+            return self.value == __o
+        except TypeError:
+            raise NotImplemented
+
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
