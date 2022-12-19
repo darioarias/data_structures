@@ -145,7 +145,10 @@ class AVLTreeNode(Generic[CT]):
 
 
 class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
-    pass
+    def __new__(
+        cls, value: T, next: Optional[SinglyLinkedListNode[T]] = None
+    ) -> SinglyLinkedListNode[T]:
+        return tuple.__new__(cls, (value, next))
 
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
