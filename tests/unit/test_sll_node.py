@@ -12,6 +12,22 @@ class TestSLLNode(unittest.TestCase):
         del self.vals
         del self.nodes
 
+    def test_properties(self) -> None:
+        n_one, n_two, *_ = self.nodes
+        one, *_ = self.vals
+
+        self.assertEqual(n_one.value, one)
+        self.assertEqual(n_one.val, one)
+        self.assertIs(n_one.next, None)
+
+        setattr(n_one, "value", 2)
+        self.assertEqual(n_one.val, 2)
+        n_one.val = 1
+        self.assertEqual(n_one.val, 1)
+
+        n_one.next = n_two
+        self.assertIs(n_one.next, n_two)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
