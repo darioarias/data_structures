@@ -18,6 +18,22 @@ class TestAVLTree(unittest.TestCase):
             count += 1
         return count
 
+    def test_constructor(self) -> None:
+        init_vals = (x for x in range(1, 10))
+        tree = Tree(x for x in init_vals)
+
+        for item in init_vals:
+            self.assertIn(item, tree)
+
+        for node in tree:
+            self.assertIn(node.val, tree)
+            self.assertIsInstance(node, TreeNode)
+
+        init_list = [str(num) for num in range(1, 5)]
+        tree = Tree(init_list)
+        for value in tree:
+            self.assertIn(str(value), init_list)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
