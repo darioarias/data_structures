@@ -55,5 +55,28 @@ class SinglyLinkedList(typing.Generic[T]):
 
         return value
 
+    def remove_last(self) -> typing.Optional[T]:
+        """Removes the value at the end of the list."""
+        if self._tail is None:
+            return None
+
+        if self._tail is self._head:
+            return self.pop()
+
+        before_tail: typing.Optional[SLLNode] = None
+        for node in self:
+            if node.next is self._tail:
+                before_tail = node
+                break
+
+        assert isinstance(
+            before_tail, SLLNode
+        ), "the node before tail should always be of type Node"
+
+        value, _ = self._tail
+        before_tail.next = None
+        self._tail = before_tail
+        return value
+
 
 __all__ = ["SinglyLinkedList"]
