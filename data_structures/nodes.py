@@ -150,5 +150,11 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
     ) -> SinglyLinkedListNode[T]:
         return tuple.__new__(cls, (value, next))
 
+    def __init__(
+        self, value: T, next: Optional[SinglyLinkedListNode[T]] = None
+    ) -> None:
+        self.value = value
+        self.next = next
+
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
