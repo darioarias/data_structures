@@ -199,5 +199,21 @@ class DoublyLinkedList(typing.Generic[T]):
         self._head = next
         return value
 
+    def remove_last(self) -> typing.Optional[T]:
+        """Removes the value at the end of the list."""
+        if self._tail is None:
+            return None
+
+        if self._tail is self._head:
+            return self.pop()
+
+        value, _, prev = self._tail
+
+        # assert isinstance(prev, DLLNode)
+        prev.next = None
+
+        self._tail = prev
+        return value
+
 
 __all__ = ["SinglyLinkedList"]
