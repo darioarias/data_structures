@@ -178,5 +178,8 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self.val!r})"
 
+    def __str__(self) -> str:
+        return f"{str(self.value)}"
+
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
