@@ -105,6 +105,14 @@ class TestAVLTree(unittest.TestCase):
             str(Tree([1, 2, 3, 4, 5, 6])), str(Tree(x for x in range(1, 7)))
         )
 
+    def test_static_methods(self) -> None:
+        items = [x for x in range(12)]
+        for val, *_ in Tree.from_list(items):
+            self.assertIn(val, items)
+
+        for val, *_ in Tree.from_iter(x for x in range(12)):
+            self.assertIn(val, items)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
