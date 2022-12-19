@@ -259,5 +259,10 @@ class DoublyLinkedList(typing.Generic[T]):
             yield current
             current = current.previous
 
+    def __bool__(self) -> bool:
+        if self._head is None:
+            return False
+        return True
+
 
 __all__ = ["SinglyLinkedList"]
