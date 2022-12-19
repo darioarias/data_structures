@@ -144,4 +144,8 @@ class AVLTreeNode(Generic[CT]):
         yield from (self.value, self.left, self.right)
 
 
-__all__ = ["BinarySearchTreeNode", "AVLTreeNode"]
+class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
+    pass
+
+
+__all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
