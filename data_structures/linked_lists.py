@@ -16,5 +16,12 @@ class SinglyLinkedList(typing.Generic[T]):
             for item in __items:
                 self.append(item)
 
+    def push(self, value: T) -> None:
+        """Adds a value at the front of the list."""
+        self._head = SLLNode[T](value, self._head)
+
+        if self._tail is None:
+            self._tail = self._head
+
 
 __all__ = ["SinglyLinkedList"]
