@@ -246,5 +246,11 @@ class DoublyLinkedList(typing.Generic[T]):
     def __str__(self) -> str:
         return " <-> ".join(str(node) for node in self)
 
+    def __contains__(self, __item: T) -> bool:
+        for node in self:
+            if node == __item:
+                return True
+        return False
+
 
 __all__ = ["SinglyLinkedList"]
