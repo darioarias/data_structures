@@ -160,5 +160,15 @@ class DoublyLinkedList(typing.Generic[T]):
         if self._tail is None:
             self._tail = self._head
 
+    def append(self, value: T) -> None:
+        """Adds a value at the end of the list."""
+        if self._tail is None:
+            return self.push(value)
+
+        self._tail = DLLNode[T](value, None, self._tail)
+
+        assert isinstance(self._tail.previous, DLLNode)
+        self._tail.previous.next = self._tail
+
 
 __all__ = ["SinglyLinkedList"]
