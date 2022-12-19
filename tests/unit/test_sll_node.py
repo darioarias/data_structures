@@ -36,6 +36,20 @@ class TestSLLNode(unittest.TestCase):
         self.assertEqual(n_three, three)
         self.assertFalse(n_three == 2)
 
+    def test_iter(self) -> None:
+        n_one, n_two, *_ = self.nodes
+        one, *_ = self.vals
+
+        val, next_ = n_one
+
+        self.assertEqual(val, one)
+        self.assertIs(next_, None)
+
+        n_one.next = n_two
+
+        _, next_ = n_one
+        self.assertIs(next_, n_two)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
