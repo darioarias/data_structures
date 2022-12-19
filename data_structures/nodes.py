@@ -144,4 +144,42 @@ class AVLTreeNode(Generic[CT]):
         yield from (self.value, self.left, self.right)
 
 
-__all__ = ["BinarySearchTreeNode", "AVLTreeNode"]
+class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
+    def __new__(
+        cls, value: T, next: Optional[SinglyLinkedListNode[T]] = None
+    ) -> SinglyLinkedListNode[T]:
+        return tuple.__new__(cls, (value, next))
+
+    def __init__(
+        self, value: T, next: Optional[SinglyLinkedListNode[T]] = None
+    ) -> None:
+        self.value = value
+        self.next = next
+
+    @property
+    def val(self) -> T:
+        return self.value
+
+    @val.setter
+    def val(self, value: T) -> None:
+        self.value = value
+
+    def __iter__(self) -> Iterator[Union[T, Optional[SinglyLinkedListNode[T]]]]:
+        yield from (self.value, self.next)
+
+    def __eq__(self, __o: Union[T, SinglyLinkedListNode[T]]) -> bool:
+        try:
+            if isinstance(__o, SinglyLinkedListNode):
+                return self.value == __o.value
+            return self.value == __o
+        except TypeError:
+            raise NotImplemented
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self.val!r})"
+
+    def __str__(self) -> str:
+        return f"{str(self.value)}"
+
+
+__all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
