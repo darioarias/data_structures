@@ -219,6 +219,9 @@ class DoublyLinkedListNode(
     def prev(self, value: Optional[DoublyLinkedListNode[T]]) -> None:
         self.previous = value
 
+    def __iter__(self) -> Iterator[Union[T, Optional[DoublyLinkedListNode[T]]]]:
+        yield from (self.value, self.next, self.previous)
+
 
 __all__ = [
     "BinarySearchTreeNode",
