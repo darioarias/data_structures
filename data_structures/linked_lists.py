@@ -142,7 +142,13 @@ class SinglyLinkedList(typing.Generic[T]):
 
 
 class DoublyLinkedList(typing.Generic[T]):
-    pass
+    def __init__(self, __items: typing.Optional[typing.Iterable[T]] = None) -> None:
+        self._head: typing.Optional[DLLNode[T]] = None
+        self._tail: typing.Optional[DLLNode[T]] = None
+
+        if __items is not None:
+            for item in __items:
+                self.append(item)
 
 
 __all__ = ["SinglyLinkedList"]
