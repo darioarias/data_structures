@@ -105,5 +105,11 @@ class SinglyLinkedList(typing.Generic[T]):
     def __str__(self) -> str:
         return " -> ".join(str(node) for node in self)
 
+    def __contains__(self, value: T) -> bool:
+        for node_val, _ in self:
+            if node_val == value:
+                return True
+        return False
+
 
 __all__ = ["SinglyLinkedList"]
