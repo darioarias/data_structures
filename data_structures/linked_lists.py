@@ -16,6 +16,15 @@ class SinglyLinkedList(typing.Generic[T]):
             for item in __items:
                 self.append(item)
 
+    @staticmethod
+    def print_from(head: SLLNode[typing.Any]) -> None:
+        def gen(head: typing.Optional[SLLNode[typing.Any]]) -> typing.Iterator[str]:
+            while head:
+                yield str(head)
+                head = head.next
+
+        print(" -> ".join(gen(head)))
+
     def push(self, value: T) -> None:
         """Adds a value at the front of the list."""
         self._head = SLLNode[T](value, self._head)
