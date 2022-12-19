@@ -141,4 +141,8 @@ class SinglyLinkedList(typing.Generic[T]):
         return True
 
 
+class DoublyLinkedList(typing.Generic[T]):
+    pass
+
+
 __all__ = ["SinglyLinkedList"]
