@@ -93,5 +93,11 @@ class SinglyLinkedList(typing.Generic[T]):
         after.next = next
         return value
 
+    def __iter__(self) -> typing.Iterator[SLLNode[T]]:
+        current = self._head
+        while current:
+            yield current
+            current = current.next
+
 
 __all__ = ["SinglyLinkedList"]
