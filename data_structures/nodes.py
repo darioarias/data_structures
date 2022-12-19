@@ -222,6 +222,12 @@ class DoublyLinkedListNode(
     def __iter__(self) -> Iterator[Union[T, Optional[DoublyLinkedListNode[T]]]]:
         yield from (self.value, self.next, self.previous)
 
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self.value!r})"
+
+    def __str__(self) -> str:
+        return f"{str(self.value)}"
+
 
 __all__ = [
     "BinarySearchTreeNode",
