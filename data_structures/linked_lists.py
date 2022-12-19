@@ -102,5 +102,8 @@ class SinglyLinkedList(typing.Generic[T]):
     def __repr__(self) -> str:
         return " -> ".join(repr(node) for node in self)
 
+    def __str__(self) -> str:
+        return " -> ".join(str(node) for node in self)
+
 
 __all__ = ["SinglyLinkedList"]
