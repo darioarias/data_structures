@@ -182,5 +182,22 @@ class DoublyLinkedList(typing.Generic[T]):
         after.next = DLLNode[T](value, next, after)
         next.previous = after.next
 
+    def pop(self) -> typing.Optional[T]:
+        """Removes the value at the front of the list."""
+        if self._head is None:
+            return None
+
+        value, next, _ = self._head
+        if self._head is self._tail:
+            self._head = None
+            self._tail = None
+            return value
+
+        # assert isinstance(next, DLLNode), "next will always be of type Node"
+        next.previous = None
+
+        self._head = next
+        return value
+
 
 __all__ = ["SinglyLinkedList"]
