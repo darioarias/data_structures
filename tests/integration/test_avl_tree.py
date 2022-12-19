@@ -12,6 +12,12 @@ class TestAVLTree(unittest.TestCase):
     def tearDown(self) -> None:
         ...
 
+    def tree_len(self, tree: Tree) -> int:
+        count: int = 0
+        for _ in tree:
+            count += 1
+        return count
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
