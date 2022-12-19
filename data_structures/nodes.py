@@ -211,6 +211,14 @@ class DoublyLinkedListNode(
     def val(self, value: T) -> None:
         self.value = value
 
+    @property
+    def prev(self) -> Optional[DoublyLinkedListNode[T]]:
+        return self.previous
+
+    @prev.setter
+    def prev(self, value: Optional[DoublyLinkedListNode[T]]) -> None:
+        self.previous = value
+
 
 __all__ = [
     "BinarySearchTreeNode",
