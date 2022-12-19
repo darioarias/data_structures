@@ -182,4 +182,15 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
         return f"{str(self.value)}"
 
 
-__all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
+class DoublyLinkedListNode(
+    tuple[T, "DoublyLinkedListNode[T]", "DoublyLinkedListNode[T]"]
+):
+    pass
+
+
+__all__ = [
+    "BinarySearchTreeNode",
+    "AVLTreeNode",
+    "SinglyLinkedListNode",
+    "DoublyLinkedListNode",
+]
