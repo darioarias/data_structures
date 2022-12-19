@@ -99,6 +99,12 @@ class TestAVLTree(unittest.TestCase):
             self.assertFalse(val in out_of_tree)
             self.assertTrue(val in in_tree)
 
+    def test_str(self) -> None:
+        self.assertEqual(str(Tree([1, 2, 3])), str(Tree(x for x in range(1, 4))))
+        self.assertEqual(
+            str(Tree([1, 2, 3, 4, 5, 6])), str(Tree(x for x in range(1, 7)))
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
