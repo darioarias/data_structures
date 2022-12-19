@@ -228,6 +228,14 @@ class DoublyLinkedListNode(
     def __str__(self) -> str:
         return f"{str(self.value)}"
 
+    def __eq__(self, __o: Union[T, DoublyLinkedListNode[T]]) -> bool:
+        try:
+            if isinstance(__o, DoublyLinkedListNode):
+                return self.value == __o.value
+            return self.value == __o
+        except TypeError:
+            raise NotImplemented
+
 
 __all__ = [
     "BinarySearchTreeNode",
