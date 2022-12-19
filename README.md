@@ -2,10 +2,10 @@
 
 ## Available In data_structures
 ### Nodes
-- You will find a generic the `BinarySearchTreeNode` class
--- Use this to annotate your code and to understand how the data can be linked in memeory (via reference, etc)
-- You will find generic the `AVLTreeNode` class
--- likewise, use this to annotate your code and to understand how data can be linked in memory 
+* You will find a generic the `BinarySearchTreeNode` class
+  * Use this to annotate your code and to understand how the data can be linked in memeory (via reference, etc)
+* You will find generic the `AVLTreeNode` class
+  * likewise, use this to annotate your code and to understand how data can be linked in memory 
 You can also use these classes to play around and build your own data structure. 
 
 ### Data Structures
