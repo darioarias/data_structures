@@ -265,4 +265,4 @@ class DoublyLinkedList(typing.Generic[T]):
         return True
 
 
-__all__ = ["SinglyLinkedList"]
+__all__ = ["SinglyLinkedList", "DoublyLinkedList"]
