@@ -234,5 +234,11 @@ class DoublyLinkedList(typing.Generic[T]):
         after.next.prev = after
         return next.value
 
+    def __iter__(self) -> typing.Iterator[DLLNode[T]]:
+        current = self._head
+        while current:
+            yield current
+            current = current.next
+
 
 __all__ = ["SinglyLinkedList"]
