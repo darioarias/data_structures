@@ -185,7 +185,13 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
 class DoublyLinkedListNode(
     tuple[T, "DoublyLinkedListNode[T]", "DoublyLinkedListNode[T]"]
 ):
-    pass
+    def __new__(
+        cls,
+        value: T,
+        next: Optional[DoublyLinkedListNode[T]] = None,
+        previous: Optional[DoublyLinkedListNode[T]] = None,
+    ) -> DoublyLinkedListNode[T]:
+        return tuple.__new__(cls, (value, next, previous))
 
 
 __all__ = [
