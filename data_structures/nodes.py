@@ -156,5 +156,13 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
         self.value = value
         self.next = next
 
+    @property
+    def val(self) -> T:
+        return self.value
+
+    @val.setter
+    def val(self, value: T) -> None:
+        self.value = value
+
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
