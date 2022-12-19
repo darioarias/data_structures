@@ -41,5 +41,19 @@ class SinglyLinkedList(typing.Generic[T]):
         _, next = after
         after.next = SLLNode[T](value, next)
 
+    def pop(self) -> typing.Optional[T]:
+        """Removes the value at the front of the list."""
+        if self._head is None:
+            return None
+
+        value, next = self._head
+
+        self._head = next
+
+        if self._head is None:
+            self._tail = None
+
+        return value
+
 
 __all__ = ["SinglyLinkedList"]
