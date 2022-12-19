@@ -31,5 +31,15 @@ class SinglyLinkedList(typing.Generic[T]):
         self._tail.next = SLLNode[T](value)
         self._tail = self._tail.next
 
+    def insert(self, after: SLLNode, value: T) -> None:
+        """Adds a value after a particular list node."""
+        assert isinstance(after, SLLNode), "After must be a Node"
+
+        if after is self._tail:
+            return self.append(value)
+
+        _, next = after
+        after.next = SLLNode[T](value, next)
+
 
 __all__ = ["SinglyLinkedList"]
