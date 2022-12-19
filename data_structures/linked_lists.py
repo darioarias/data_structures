@@ -126,5 +126,10 @@ class SinglyLinkedList(typing.Generic[T]):
             return _empt_itr()
         return _reverse(self._head)
 
+    def __bool__(self) -> bool:
+        if self._head is None:
+            return False
+        return True
+
 
 __all__ = ["SinglyLinkedList"]
