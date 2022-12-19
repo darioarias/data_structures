@@ -99,5 +99,8 @@ class SinglyLinkedList(typing.Generic[T]):
             yield current
             current = current.next
 
+    def __repr__(self) -> str:
+        return " -> ".join(repr(node) for node in self)
+
 
 __all__ = ["SinglyLinkedList"]
