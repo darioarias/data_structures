@@ -175,5 +175,8 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
         except TypeError:
             raise NotImplemented
 
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self.val!r})"
+
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
