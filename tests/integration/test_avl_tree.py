@@ -6,7 +6,11 @@ from data_structures.nodes import AVLTreeNode as TreeNode
 
 
 class TestAVLTree(unittest.TestCase):
-    pass
+    def setUp(self) -> None:
+        ...
+
+    def tearDown(self) -> None:
+        ...
 
 
 if __name__ == "__main__":
