@@ -164,5 +164,8 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
     def val(self, value: T) -> None:
         self.value = value
 
+    def __iter__(self) -> Iterator[Union[T, Optional[SinglyLinkedListNode[T]]]]:
+        yield from (self.value, self.next)
+
 
 __all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
