@@ -93,5 +93,15 @@ class Heap(Generic[CT]):
             self._swap(parent, candidate)
             parent = candidate
 
+    def _sift_up(self, from_index: int) -> None:
+        _parent_index: Callable[[int], int] = lambda child_index: (child_index - 1) // 2
+
+        child = from_index
+        parent = _parent_index(child)
+        while child > 0 and self._sort(self._elements[child], self._elements[parent]):
+            self._swap(child, parent)
+            child = parent
+            parent = _parent_index(child)
+
 
 __all__ = ["Heap"]
