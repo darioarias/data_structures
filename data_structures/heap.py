@@ -103,5 +103,11 @@ class Heap(Generic[CT]):
             child = parent
             parent = _parent_index(child)
 
+    def _heapify(self, items: list[CT]) -> None:
+        assert isinstance(items, list)
+        self._elements = items
+        for i in range((len(items) // 2), -1, -1):
+            self._sift_down(i)
+
 
 __all__ = ["Heap"]
