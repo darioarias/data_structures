@@ -32,5 +32,9 @@ class Heap(Generic[CT]):
     def is_empty(self) -> bool:
         return self.size == 0
 
+    @property
+    def size(self) -> int:
+        return len(self._elements)
+
 
 __all__ = ["Heap"]
