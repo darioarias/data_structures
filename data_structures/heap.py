@@ -109,5 +109,8 @@ class Heap(Generic[CT]):
         for i in range((len(items) // 2), -1, -1):
             self._sift_down(i)
 
+    def __repr__(self) -> str:
+        return reprlib.repr(self._elements)
+
 
 __all__ = ["Heap"]
