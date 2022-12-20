@@ -36,5 +36,9 @@ class Heap(Generic[CT]):
     def size(self) -> int:
         return len(self._elements)
 
+    @property
+    def peek(self) -> Optional[CT]:
+        return self._elements[0] if self.size > 0 else None
+
 
 __all__ = ["Heap"]
