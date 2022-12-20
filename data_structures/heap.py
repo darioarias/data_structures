@@ -40,5 +40,11 @@ class Heap(Generic[CT]):
     def peek(self) -> Optional[CT]:
         return self._elements[0] if self.size > 0 else None
 
+    def _swap(self, index_a: int, index_b: int) -> None:
+        [self._elements[index_a], self._elements[index_b]] = [
+            self._elements[index_b],
+            self._elements[index_a],
+        ]
+
 
 __all__ = ["Heap"]
