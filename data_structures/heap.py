@@ -112,5 +112,8 @@ class Heap(Generic[CT]):
     def __repr__(self) -> str:
         return reprlib.repr(self._elements)
 
+    def __iter__(self) -> Iterator[CT]:
+        yield from self._elements
+
 
 __all__ = ["Heap"]
