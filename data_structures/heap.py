@@ -47,7 +47,7 @@ class Heap(Generic[CT]):
         ]
 
     def remove(self) -> Optional[CT]:
-        if self.is_empty:
+        if not self:
             return None
 
         self._swap(0, self.size - 1)
