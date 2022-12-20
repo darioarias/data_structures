@@ -46,5 +46,16 @@ class Heap(Generic[CT]):
             self._elements[index_a],
         ]
 
+    def remove(self) -> Optional[CT]:
+        if self.is_empty:
+            return None
+
+        self._swap(0, self.size - 1)
+        min_val = self._elements.pop()
+
+        self._sift_down(0)
+
+        return min_val
+
 
 __all__ = ["Heap"]
