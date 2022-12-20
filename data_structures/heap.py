@@ -61,5 +61,37 @@ class Heap(Generic[CT]):
         self._elements.append(value)
         self._sift_up(self.size - 1)
 
+    def _sift_down(self, from_index: int) -> None:
+        _left_child_index: Callable[[int], int] = (
+            lambda parent_index: (2 * parent_index) + 1
+        )
+
+        _right_child_index: Callable[[int], int] = (
+            lambda parent_index: (2 * parent_index) + 2
+        )
+
+        parent = from_index
+        while True:
+            left = _left_child_index(parent)
+            right = _right_child_index(parent)
+
+            candidate = parent
+
+            if left < self.size and self._sort(
+                self._elements[left], self._elements[candidate]
+            ):
+                candidate = left
+
+            if right < self.size and self._sort(
+                self._elements[right], self._elements[candidate]
+            ):
+                candidate = right
+
+            if candidate == parent:
+                return None
+
+            self._swap(parent, candidate)
+            parent = candidate
+
 
 __all__ = ["Heap"]
