@@ -28,5 +28,9 @@ class Heap(Generic[CT]):
         if __items is not None:
             self._heapify(__items)
 
+    @property
+    def is_empty(self) -> bool:
+        return self.size == 0
+
 
 __all__ = ["Heap"]
