@@ -182,4 +182,64 @@ class SinglyLinkedListNode(tuple[T, "SinglyLinkedListNode[T]"]):
         return f"{str(self.value)}"
 
 
-__all__ = ["BinarySearchTreeNode", "AVLTreeNode", "SinglyLinkedListNode"]
+class DoublyLinkedListNode(
+    tuple[T, "DoublyLinkedListNode[T]", "DoublyLinkedListNode[T]"]
+):
+    def __new__(
+        cls,
+        value: T,
+        next: Optional[DoublyLinkedListNode[T]] = None,
+        previous: Optional[DoublyLinkedListNode[T]] = None,
+    ) -> DoublyLinkedListNode[T]:
+        return tuple.__new__(cls, (value, next, previous))
+
+    def __init__(
+        self,
+        value: T,
+        next: Optional[DoublyLinkedListNode[T]] = None,
+        previous: Optional[DoublyLinkedListNode[T]] = None,
+    ) -> None:
+        self.value = value
+        self.next = next
+        self.previous = previous
+
+    @property
+    def val(self) -> T:
+        return self.value
+
+    @val.setter
+    def val(self, value: T) -> None:
+        self.value = value
+
+    @property
+    def prev(self) -> Optional[DoublyLinkedListNode[T]]:
+        return self.previous
+
+    @prev.setter
+    def prev(self, value: Optional[DoublyLinkedListNode[T]]) -> None:
+        self.previous = value
+
+    def __iter__(self) -> Iterator[Union[T, Optional[DoublyLinkedListNode[T]]]]:
+        yield from (self.value, self.next, self.previous)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self.value!r})"
+
+    def __str__(self) -> str:
+        return f"{str(self.value)}"
+
+    def __eq__(self, __o: Union[T, DoublyLinkedListNode[T]]) -> bool:
+        try:
+            if isinstance(__o, DoublyLinkedListNode):
+                return self.value == __o.value
+            return self.value == __o
+        except TypeError:
+            raise NotImplemented
+
+
+__all__ = [
+    "BinarySearchTreeNode",
+    "AVLTreeNode",
+    "SinglyLinkedListNode",
+    "DoublyLinkedListNode",
+]
