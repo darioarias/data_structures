@@ -112,8 +112,35 @@ class Heap(Generic[CT]):
     def __repr__(self) -> str:
         return reprlib.repr(self._elements)
 
+    def __bool__(self) -> bool:
+        return bool(self._elements)
+
     def __iter__(self) -> Iterator[CT]:
-        yield from self._elements
+        priority_queue: Heap[tuple[CT, int]] = Heap()
+
+        def _sorter(record_a: tuple[CT, int], record_b: tuple[CT, int]) -> bool:
+            return self._sort(record_a[0], record_b[0])
+
+        def children(index: int) -> tuple[int, int]:
+            return ((2 * index) + 1, (2 * index) + 2)
+
+        priority_queue._sort = _sorter
+        priority_queue.insert((self._elements[0], 0))
+
+        while priority_queue:
+            current = priority_queue.remove()
+            assert current is not None
+
+            val, index = current
+
+            yield val
+
+            left, right = children(index)
+            if left < len(self._elements):
+                priority_queue.insert((self._elements[left], left))
+
+            if right < len(self._elements):
+                priority_queue.insert((self._elements[right], right))
 
 
 __all__ = ["Heap"]
