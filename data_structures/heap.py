@@ -57,5 +57,9 @@ class Heap(Generic[CT]):
 
         return min_val
 
+    def insert(self, value: CT) -> None:
+        self._elements.append(value)
+        self._sift_up(self.size - 1)
+
 
 __all__ = ["Heap"]
