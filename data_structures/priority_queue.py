@@ -40,5 +40,10 @@ class PriorityQueue(Generic[_T]):
         """Removes the element with the highest priority and returns it. Returns `None` if the queue is empty."""
         return self.heap.remove()
 
+    @property
+    def is_empty(self) -> bool:
+        """Checks if the queue is empty."""
+        return self.heap.size == 0
+
 
 __all__ = ["PriorityQueue"]
