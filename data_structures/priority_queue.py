@@ -59,5 +59,11 @@ class PriorityQueue(Generic[_T]):
     def __iter__(self) -> Iterator[_T]:
         yield from self.heap
 
+    def __repr__(self) -> str:
+        return repr(self.heap)
+
+    def __str__(self) -> str:
+        return str(self.heap)
+
 
 __all__ = ["PriorityQueue"]
