@@ -50,5 +50,8 @@ class PriorityQueue(Generic[_T]):
         """Returns the element with the highest priority without removing it. Returns `None` if the queue was empty."""
         return self.heap.peek
 
+    def __bool__(self) -> bool:
+        return bool(self.heap)
+
 
 __all__ = ["PriorityQueue"]
