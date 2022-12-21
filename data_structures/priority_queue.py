@@ -32,5 +32,9 @@ class PriorityQueue(Generic[_T]):
 
         self.heap = heap
 
+    def enqueue(self, value: _T) -> None:
+        """Inserts an element into the queue."""
+        self.heap.insert(value)
+
 
 __all__ = ["PriorityQueue"]
