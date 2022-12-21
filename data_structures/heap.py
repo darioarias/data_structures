@@ -112,6 +112,38 @@ class Heap(Generic[CT]):
     def __repr__(self) -> str:
         return reprlib.repr(self._elements)
 
+    def __str__(self) -> str:
+        def children(index: int) -> tuple[int, int]:
+            return (
+                (2 * index) + 1,
+                (2 * index) + 2,
+            )
+
+        def diagram(
+            items: list[CT],
+            top: str = "",
+            root: str = "",
+            bottom: str = "",
+            index: int = 0,
+        ) -> str:
+            """This algorithm is based on an implementation by Károly Lőrentey in his book [Optimizing Collections](https://www.objc.io/books/optimizing-collections/)"""
+            if index >= len(items):
+                return root + "None\n"
+
+            left, right = children(index)
+
+            if left >= len(items) and right >= len(items):
+                return root + f"{items[index]!r}\n"
+
+            return (
+                diagram(items, top + "  ", top + "┌─", top + "│ ", right)
+                + root
+                + f"{items[index]!r}\n"
+                + diagram(items, bottom + "│ ", bottom + "└─", bottom + "  ", left)
+            )
+
+        return diagram(self._elements)
+
     def __bool__(self) -> bool:
         return bool(self._elements)
 
