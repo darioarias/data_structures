@@ -15,7 +15,22 @@ def _default_key(a: _T, b: _T) -> bool:
 
 
 class PriorityQueue(Generic[_T]):
-    pass
+    def __init__(
+        self,
+        __items: Optional[Union[list[_T], Iterable[_T]]] = None,
+        key: Callable[[_T, _T], bool] = _default_key,
+    ) -> None:
+        _items: list[_T] = []
+        if isinstance(__items, list):
+            _items = __items
+        elif isinstance(__items, Iterable):
+            _items = [item for item in __items]
+
+        heap: Heap[_T] = Heap()  # type: ignore
+        heap._sort = key
+        heap._heapify(_items)
+
+        self.heap = heap
 
 
 __all__ = ["PriorityQueue"]
