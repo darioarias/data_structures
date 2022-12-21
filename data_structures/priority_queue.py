@@ -36,5 +36,9 @@ class PriorityQueue(Generic[_T]):
         """Inserts an element into the queue."""
         self.heap.insert(value)
 
+    def dequeue(self) -> Optional[_T]:
+        """Removes the element with the highest priority and returns it. Returns `None` if the queue is empty."""
+        return self.heap.remove()
+
 
 __all__ = ["PriorityQueue"]
