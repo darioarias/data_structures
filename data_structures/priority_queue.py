@@ -56,5 +56,8 @@ class PriorityQueue(Generic[_T]):
     def __contains__(self, item: _T) -> bool:
         return item in self.heap
 
+    def __iter__(self) -> Iterator[_T]:
+        yield from self.heap
+
 
 __all__ = ["PriorityQueue"]
