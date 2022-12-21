@@ -116,6 +116,9 @@ class Heap(Generic[CT]):
         return bool(self._elements)
 
     def __iter__(self) -> Iterator[CT]:
+        if not self._elements:
+            return
+
         priority_queue: Heap[tuple[CT, int]] = Heap()
 
         def _sorter(record_a: tuple[CT, int], record_b: tuple[CT, int]) -> bool:
