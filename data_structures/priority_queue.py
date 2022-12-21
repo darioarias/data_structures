@@ -53,5 +53,8 @@ class PriorityQueue(Generic[_T]):
     def __bool__(self) -> bool:
         return bool(self.heap)
 
+    def __contains__(self, item: _T) -> bool:
+        return item in self.heap
+
 
 __all__ = ["PriorityQueue"]
