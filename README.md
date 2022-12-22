@@ -1,6 +1,6 @@
 # Data Structures
 
-## Available In data_structures
+## Available in data_structures
 ### Nodes
 * You will find a generic the `BinarySearchTreeNode` class
   * Use this to annotate your code and to understand how the data can be linked in memeory (via reference, etc)
@@ -36,7 +36,22 @@ You can also use these classes to play around and build your own data structure.
 * You will also find an implementation for `BinarySearchTree`
   * can also be printed liked `AVL`
 
+* You will find implementations for both, `SinglyLinkedList` and `DoublyLinkedList` 
+  * Both of these can be printed
+  ```
+  # for example
+  
+  print(SinglyLinkedList(x for x in range(1, 5)))
+  # prints: 1 -> 2 -> 3 -> 4
 
+  print(DoublyLinkedList(x for x in range(1, 5)))
+  # prints: 1 <-> 2 <-> 3 <-> 4
+  ```
+* You will find an implementation for `Heap`
+  * `Heaps` can either be min or max and only handle basic data types
+
+* You will find an implementation for `PriorityQueue`
+  * `PriorityQueue` can handle complex and abstract data types if a key function is provided
 ## About the code
 The code provided here is not meant to solve any problem for you. It is meant to give you the tools to understand and play around with different solutions for programming problems. 
 
