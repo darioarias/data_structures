@@ -24,6 +24,7 @@ class SinglyLinkedList(typing.Generic[T]):
                 yield str(head)
                 head = head.next
 
+        assert head is not None, "A starting node must be provided."
         print(" -> ".join(gen(head)))
 
     def push(self, value: T) -> None:
