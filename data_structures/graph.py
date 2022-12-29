@@ -16,3 +16,9 @@ class _Vertex(typing.Generic[_T]):
 
     def __iter__(self) -> typing.Iterator[_T]:
         yield self._data
+
+    def __eq__(self, __o: _Vertex[_T]) -> bool:
+        try:
+            return self._data == __o._data
+        except:
+            return NotImplemented
