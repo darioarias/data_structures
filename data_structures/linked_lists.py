@@ -24,6 +24,7 @@ class SinglyLinkedList(typing.Generic[T]):
                 yield str(head)
                 head = head.next
 
+        assert head is not None, "A starting node must be provided."
         print(" -> ".join(gen(head)))
 
     def push(self, value: T) -> None:
@@ -150,6 +151,16 @@ class DoublyLinkedList(typing.Generic[T]):
         if __items is not None:
             for item in __items:
                 self.append(item)
+
+    @staticmethod
+    def print_from(head: DLLNode[typing.Any]) -> None:
+        def gen(head: typing.Optional[DLLNode[typing.Any]]) -> typing.Iterator[str]:
+            while head:
+                yield str(head)
+                head = head.next
+
+        assert head is not None, "A starting node must be provided."
+        print(" <-> ".join(gen(head)))
 
     def push(self, value: T) -> None:
         """Adds a value at the front of the list."""
