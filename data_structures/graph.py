@@ -96,4 +96,10 @@ class _Graphable(typing.Generic[_T]):
 
 
 class AdjacencyList(_Graphable[_T]):
-    pass
+    def create_vertex(self, data: _T) -> _Vertex[_T]:
+        vertex = _Vertex(data=data)
+
+        if not (vertex in self.adjacency_list):
+            self.adjacency_list[vertex] = []
+
+        return vertex
