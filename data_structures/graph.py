@@ -145,3 +145,23 @@ class AdjacencyList(_Graphable[_T]):
 
     def edges(self, source: _Vertex[_T]) -> typing.Optional[list[_Edge[_T]]]:
         return self.adjacency_list.get(source, None)
+
+    def __str__(self) -> str:
+        msg = ["{\n"]
+        space = "  " * 2
+        inner_msg = []
+
+        def edges_to_str(items: list[_Edge[_T]]) -> typing.Iterator[str]:
+            return (f"{str(edge.destination)}, cost: {edge.weight}" for edge in items)
+
+        for key in self.adjacency_list:
+            new_line = f"\n{space * 2}  "
+            inner_str = f"{new_line}".join(edges_to_str(self.adjacency_list[key]))
+            inner_str += f"\n{space*2}]" if inner_str else "]"
+            if inner_str != "]":
+                inner_str = f"{new_line}{inner_str}"
+            inner_msg.append(f"{space}{str(key)}: [{inner_str}")
+
+        msg.append("\n".join(inner_msg))
+        msg.append("\n}")
+        return "".join(msg)
