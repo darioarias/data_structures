@@ -90,3 +90,6 @@ class _Graphable(typing.Generic[_T]):
 
     def weight(self, source: _Vertex[_T], destination: _Vertex[_T]) -> int | float:
         ...
+
+    def edges(self, source: _Vertex[_T]) -> list[_Edge[_T]]:
+        ...
