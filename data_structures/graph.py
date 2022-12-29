@@ -93,3 +93,7 @@ class _Graphable(typing.Generic[_T]):
 
     def edges(self, source: _Vertex[_T]) -> list[_Edge[_T]]:
         ...
+
+
+class AdjacencyList(_Graphable[_T]):
+    pass
