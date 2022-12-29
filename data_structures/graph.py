@@ -70,3 +70,7 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
     def __str__(self) -> str:
         return f"{str(self.source)} -({self.weight})-> {str(self.destination)}"
+
+
+class _Graphable(typing.Generic[_T]):
+    pass
