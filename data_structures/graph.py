@@ -22,3 +22,6 @@ class _Vertex(typing.Generic[_T]):
             return self._data == __o._data
         except:
             return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(self._data)
