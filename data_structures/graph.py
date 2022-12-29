@@ -25,3 +25,9 @@ class _Vertex(typing.Generic[_T]):
 
     def __hash__(self) -> int:
         return hash(self._data)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}(data={self._data!r})"
+
+    def __str__(self) -> str:
+        return f"{str(self._data)}"
