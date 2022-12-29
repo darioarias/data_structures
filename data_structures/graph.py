@@ -31,3 +31,7 @@ class _Vertex(typing.Generic[_T]):
 
     def __str__(self) -> str:
         return f"{str(self._data)}"
+
+
+class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
+    pass
