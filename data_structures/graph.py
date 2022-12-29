@@ -194,6 +194,8 @@ class AdjacencyList(_Graphable[_T]):
         while True:
             current, cost = record[end]
             if cost == float("-inf"):
+                if len(path) == 0:
+                    raise ValueError(f"No path exists between {start} and {end}")
                 path.append((start, 0))
                 return reversed(path)
 
@@ -204,7 +206,7 @@ class AdjacencyList(_Graphable[_T]):
         self, start: _Vertex[_T], end: _Vertex[_T]
     ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
         if start not in self.adjacency_list or end not in self.adjacency_list:
-            raise ValueError(f"No path exisits between vertex {start} and {end}")
+            raise ValueError(f"No path exists between {start} and {end}")
 
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
             PriorityQueue(
