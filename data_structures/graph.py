@@ -151,6 +151,38 @@ class AdjacencyList(_Graphable[_T]):
     def edges(self, source: _Vertex[_T]) -> typing.Optional[list[_Edge[_T]]]:
         return self.adjacency_list.get(source, None)
 
+    def _visit_vertecies(
+        self,
+        queue: PriorityQueue[_Edge[_T]],
+        visited: set[_Edge[_T]],
+        start: _Vertex[_T],
+    ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
+            lambda: (
+                _Vertex(data=type(_T.__class__)),
+                float("-inf"),
+            )
+        )
+
+        while queue:
+            edge = queue.dequeue()
+            assert edge is not None
+
+            src, dst, weight = edge
+
+            if record[dst][1] == float("-inf") and dst != start:
+                record[dst] = (src, weight)
+            elif record[dst][1] + weight < record[dst][1]:
+                record[dst] = (src, record[dst][1] + weight)
+
+            for neighbor in self.adjacency_list[dst]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    e_src, e_dst, e_wgt = neighbor
+                    queue.enqueue(_Edge(e_src, e_dst, e_wgt + weight))
+
+        return record
+
     def __str__(self) -> str:
         msg = ["{\n"]
         space = "  " * 2
