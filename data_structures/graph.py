@@ -142,3 +142,6 @@ class AdjacencyList(_Graphable[_T]):
                 return edge.weight
 
         return None
+
+    def edges(self, source: _Vertex[_T]) -> typing.Optional[list[_Edge[_T]]]:
+        return self.adjacency_list.get(source, None)
