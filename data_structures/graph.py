@@ -45,3 +45,6 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
         self.source: _Vertex[_T] = source
         self.destination: _Vertex[_T] = destination
         self.weight: float = weight
+
+    def __hash__(self) -> int:
+        return hash((self.source, self.destination, self.weight))
