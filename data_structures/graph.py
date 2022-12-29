@@ -165,10 +165,7 @@ class AdjacencyList(_Graphable[_T]):
         )
 
         while queue:
-            edge = queue.dequeue()
-            assert edge is not None
-
-            src, dst, weight = edge
+            src, dst, weight = queue.dequeue()
 
             if record[dst][1] == float("-inf") and dst != start:
                 record[dst] = (src, weight)
