@@ -130,3 +130,15 @@ class AdjacencyList(_Graphable[_T]):
                 )
             case _:
                 self.add_undirected_edge(vertices=(source, destination), weight=weight)
+
+    def weight(
+        self, source: _Vertex[_T], destination: _Vertex[_T]
+    ) -> typing.Optional[int | float]:
+        if not (source in self.adjacency_list):
+            return None
+
+        for edge in self.adjacency_list[source]:
+            if edge.destination == destination:
+                return edge.weight
+
+        return None
