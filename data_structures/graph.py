@@ -11,4 +11,5 @@ _T = typing.TypeVar("_T")
 
 
 class _Vertex(typing.Generic[_T]):
-    pass
+    def __init__(self, data: _T) -> None:
+        self._data = data
