@@ -116,3 +116,17 @@ class AdjacencyList(_Graphable[_T]):
         source, destination = vertices
         self.add_directed_edge(source=source, destination=destination, weight=weight)
         self.add_directed_edge(source=destination, destination=source, weight=weight)
+
+    def add(
+        self,
+        source: _Vertex[_T],
+        destination: _Vertex[_T],
+        weight: float = 0,
+    ) -> None:
+        match self._type:
+            case True:
+                self.add_directed_edge(
+                    source=source, destination=destination, weight=weight
+                )
+            case _:
+                self.add_undirected_edge(vertices=(source, destination), weight=weight)
