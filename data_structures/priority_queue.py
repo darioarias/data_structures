@@ -36,9 +36,14 @@ class PriorityQueue(Generic[_T]):
         """Inserts an element into the queue."""
         self.heap.insert(value)
 
-    def dequeue(self) -> Optional[_T]:
-        """Removes the element with the highest priority and returns it. Returns `None` if the queue is empty."""
-        return self.heap.remove()
+    def dequeue(self) -> _T:
+        """Removes the element with the highest priority and returns it."""
+        try:
+            _r_val = self.heap.remove()
+            assert _r_val is not None, "Removing from an empty Heap is not allowed"
+            return _r_val
+        except:
+            raise ValueError("Cannot remove from an empty Queue")
 
     @property
     def is_empty(self) -> bool:
