@@ -58,3 +58,6 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
             )
         except:
             return NotImplemented
+
+    def __iter__(self) -> typing.Iterator[typing.Union[_Vertex[_T], float]]:
+        yield from (self.source, self.destination, self.weight)
