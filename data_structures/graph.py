@@ -109,3 +109,10 @@ class AdjacencyList(_Graphable[_T]):
     ):
         edge = _Edge(source=source, destination=destination, weight=weight)
         self.adjacency_list.setdefault(source, []).append(edge)
+
+    def add_undirected_edge(
+        self, vertices: tuple[_Vertex[_T], _Vertex[_T]], weight: float | int = 0
+    ):
+        source, destination = vertices
+        self.add_directed_edge(source=source, destination=destination, weight=weight)
+        self.add_directed_edge(source=destination, destination=source, weight=weight)
