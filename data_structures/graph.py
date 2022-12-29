@@ -94,6 +94,11 @@ class _Graphable(typing.Generic[_T]):
     def edges(self, source: _Vertex[_T]) -> list[_Edge[_T]]:
         ...
 
+    def dijkstra(
+        self, start: _Vertex[_T], end: _Vertex[_T]
+    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+        ...
+
 
 class AdjacencyList(_Graphable[_T]):
     def create_vertex(self, data: _T) -> _Vertex[_T]:
@@ -145,6 +150,74 @@ class AdjacencyList(_Graphable[_T]):
 
     def edges(self, source: _Vertex[_T]) -> typing.Optional[list[_Edge[_T]]]:
         return self.adjacency_list.get(source, None)
+
+    def _visit_vertecies(
+        self,
+        queue: PriorityQueue[_Edge[_T]],
+        visited: set[_Edge[_T]],
+        start: _Vertex[_T],
+    ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
+            lambda: (
+                _Vertex(data=type(_T.__class__)),
+                float("-inf"),
+            )
+        )
+
+        while queue:
+            edge = queue.dequeue()
+            assert edge is not None
+
+            src, dst, weight = edge
+
+            if record[dst][1] == float("-inf") and dst != start:
+                record[dst] = (src, weight)
+            elif record[dst][1] + weight < record[dst][1]:
+                record[dst] = (src, record[dst][1] + weight)
+
+            for neighbor in self.adjacency_list[dst]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    e_src, e_dst, e_wgt = neighbor
+                    queue.enqueue(_Edge(e_src, e_dst, e_wgt + weight))
+
+        return record
+
+    def _build_path(
+        self,
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]],
+        start: _Vertex[_T],
+        end: _Vertex[_T],
+    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+        path: list[tuple[_Vertex, float]] = []
+
+        while True:
+            current, cost = record[end]
+            if cost == float("-inf"):
+                if len(path) == 0:
+                    raise ValueError(f"No path exists between {start} and {end}")
+                path.append((start, 0))
+                return reversed(path)
+
+            path.append((end, cost))
+            end = current
+
+    def dijkstra(
+        self, start: _Vertex[_T], end: _Vertex[_T]
+    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+        if start not in self.adjacency_list or end not in self.adjacency_list:
+            raise ValueError(f"No path exists between {start} and {end}")
+
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
+            PriorityQueue(
+                [_Edge(start, start, 0)],
+                key=lambda a, b: operator.lt(a.weight, b.weight),
+            ),
+            set(),
+            start,
+        )
+
+        return self._build_path(record, start, end)
 
     def __str__(self) -> str:
         msg = ["{\n"]
