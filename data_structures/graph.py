@@ -13,3 +13,6 @@ _T = typing.TypeVar("_T")
 class _Vertex(typing.Generic[_T]):
     def __init__(self, data: _T) -> None:
         self._data = data
+
+    def __iter__(self) -> typing.Iterator[_T]:
+        yield self._data
