@@ -87,3 +87,6 @@ class _Graphable(typing.Generic[_T]):
         weight: int | float = 0,
     ) -> None:
         ...
+
+    def weight(self, source: _Vertex[_T], destination: _Vertex[_T]) -> int | float:
+        ...
