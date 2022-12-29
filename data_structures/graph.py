@@ -103,3 +103,9 @@ class AdjacencyList(_Graphable[_T]):
             self.adjacency_list[vertex] = []
 
         return vertex
+
+    def add_directed_edge(
+        self, source: _Vertex[_T], destination: _Vertex[_T], weight: int | float = 0
+    ):
+        edge = _Edge(source=source, destination=destination, weight=weight)
+        self.adjacency_list.setdefault(source, []).append(edge)
