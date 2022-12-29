@@ -38,3 +38,10 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
         cls, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0
     ) -> _Edge[_T]:
         return tuple.__new__(cls, (source, destination, weight))
+
+    def __init__(
+        self, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0
+    ) -> None:
+        self.source: _Vertex[_T] = source
+        self.destination: _Vertex[_T] = destination
+        self.weight: float = weight
