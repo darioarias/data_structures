@@ -94,6 +94,11 @@ class _Graphable(typing.Generic[_T]):
     def edges(self, source: _Vertex[_T]) -> list[_Edge[_T]]:
         ...
 
+    def dijkstra(
+        self, start: _Vertex[_T], end: _Vertex[_T]
+    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+        ...
+
 
 class AdjacencyList(_Graphable[_T]):
     def create_vertex(self, data: _T) -> _Vertex[_T]:
