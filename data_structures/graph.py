@@ -183,6 +183,23 @@ class AdjacencyList(_Graphable[_T]):
 
         return record
 
+    def _build_path(
+        self,
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]],
+        start: _Vertex[_T],
+        end: _Vertex[_T],
+    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+        path: list[tuple[_Vertex, float]] = []
+
+        while True:
+            current, cost = record[end]
+            if cost == float("-inf"):
+                path.append((start, 0))
+                return reversed(path)
+
+            path.append((end, cost))
+            end = current
+
     def __str__(self) -> str:
         msg = ["{\n"]
         space = "  " * 2
