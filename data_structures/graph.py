@@ -34,4 +34,7 @@ class _Vertex(typing.Generic[_T]):
 
 
 class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
-    pass
+    def __new__(
+        cls, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0
+    ) -> _Edge[_T]:
+        return tuple.__new__(cls, (source, destination, weight))
