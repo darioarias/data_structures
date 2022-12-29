@@ -73,4 +73,6 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
 
 class _Graphable(typing.Generic[_T]):
-    pass
+    def __init__(self, directed: bool = True) -> None:
+        self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = {}
+        self._type = directed
