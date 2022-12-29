@@ -61,3 +61,12 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
     def __iter__(self) -> typing.Iterator[typing.Union[_Vertex[_T], float]]:
         yield from (self.source, self.destination, self.weight)
+
+    def __repr__(self) -> str:
+        return (
+            f"{type(self).__name__}(source={self.source}, "
+            f"destination={self.destination}, weight={self.weight})"
+        )
+
+    def __str__(self) -> str:
+        return f"{str(self.source)} -({self.weight})-> {str(self.destination)}"
