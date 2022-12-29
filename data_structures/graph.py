@@ -79,3 +79,11 @@ class _Graphable(typing.Generic[_T]):
 
     def create_vertex(self, data: _T) -> _Vertex[_T]:
         return _Vertex(data)
+
+    def add(
+        self,
+        source: _Vertex[_T],
+        destination: _Vertex[_T],
+        weight: int | float = 0,
+    ) -> None:
+        ...
