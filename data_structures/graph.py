@@ -48,3 +48,13 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
     def __hash__(self) -> int:
         return hash((self.source, self.destination, self.weight))
+
+    def __eq__(self, rhs: _Edge[_T]) -> bool:
+        try:
+            return (
+                self.destination == rhs.destination
+                and self.destination == rhs.destination
+                and self.weight == rhs.weight
+            )
+        except:
+            return NotImplemented
