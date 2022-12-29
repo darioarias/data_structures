@@ -200,6 +200,23 @@ class AdjacencyList(_Graphable[_T]):
             path.append((end, cost))
             end = current
 
+    def dijkstra(
+        self, start: _Vertex[_T], end: _Vertex[_T]
+    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+        if start not in self.adjacency_list or end not in self.adjacency_list:
+            raise ValueError(f"No path exisits between vertex {start} and {end}")
+
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
+            PriorityQueue(
+                [_Edge(start, start, 0)],
+                key=lambda a, b: operator.lt(a.weight, b.weight),
+            ),
+            set(),
+            start,
+        )
+
+        return self._build_path(record, start, end)
+
     def __str__(self) -> str:
         msg = ["{\n"]
         space = "  " * 2
