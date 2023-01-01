@@ -3,7 +3,7 @@ from __future__ import annotations
 import enum
 import operator
 import typing
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 
 from .priority_queue import PriorityQueue
 
@@ -101,6 +101,18 @@ class _Graphable(typing.Generic[_T]):
 
 
 class AdjacencyList(_Graphable[_T]):
+    def __init__(
+        self,
+        __items: typing.Optional[typing.Union[list[_T], typing.Iterable[_T]]] = None,
+        directed: bool = True,
+    ) -> None:
+        super().__init__(directed)
+        self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = OrderedDict()
+
+        if __items is not None:
+            for item in __items:
+                self.create_vertex(item)
+
     def create_vertex(self, data: _T) -> _Vertex[_T]:
         vertex = _Vertex(data=data)
 
@@ -159,7 +171,11 @@ class AdjacencyList(_Graphable[_T]):
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
-                _Vertex(data=type(_T.__class__)),
+                _Vertex(
+                    data=type(
+                        _T.__class__
+                    )  # trying to create an default instance of the type being used.
+                ),
                 float("-inf"),
             )
         )
