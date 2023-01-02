@@ -101,6 +101,9 @@ class _Graphable(typing.Generic[_T]):
     ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
         ...
 
+    def minimum_spanning_tree(self) -> AdjacencyList[_T]:
+        ...
+
 
 class AdjacencyList(_Graphable[_T]):
     def __init__(
@@ -203,7 +206,7 @@ class AdjacencyList(_Graphable[_T]):
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]],
         start: _Vertex[_T],
         end: _Vertex[_T],
-    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+    ) -> typing.Iterator[tuple[_Vertex[_T], float]]:
         path: list[tuple[_Vertex, float]] = []
 
         while True:
@@ -219,7 +222,7 @@ class AdjacencyList(_Graphable[_T]):
 
     def dijkstra(
         self, start: _Vertex[_T], end: _Vertex[_T]
-    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+    ) -> typing.Iterator[tuple[_Vertex[_T], float]]:
         if start not in self.adjacency_list or end not in self.adjacency_list:
             raise ValueError(f"No path exists between {start} and {end}")
 
