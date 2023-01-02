@@ -3,7 +3,7 @@ from __future__ import annotations
 import enum
 import operator
 import typing
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 
 from .priority_queue import PriorityQueue
 
@@ -73,8 +73,10 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
 
 class _Graphable(typing.Generic[_T]):
-    def __init__(self, directed: bool = True) -> None:
-        self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = {}
+    def __init__(
+        self,
+        directed: bool = True,
+    ) -> None:
         self._type = directed
 
     def create_vertex(self, data: _T) -> _Vertex[_T]:
@@ -101,6 +103,18 @@ class _Graphable(typing.Generic[_T]):
 
 
 class AdjacencyList(_Graphable[_T]):
+    def __init__(
+        self,
+        __items: typing.Optional[typing.Union[list[_T], typing.Iterable[_T]]] = None,
+        directed: bool = True,
+    ) -> None:
+        super().__init__(directed)
+        self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = OrderedDict()
+
+        if __items is not None:
+            for item in __items:
+                self.create_vertex(item)
+
     def create_vertex(self, data: _T) -> _Vertex[_T]:
         vertex = _Vertex(data=data)
 
@@ -159,7 +173,11 @@ class AdjacencyList(_Graphable[_T]):
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
-                _Vertex(data=type(_T.__class__)),
+                _Vertex(
+                    data=type(
+                        _T.__class__
+                    )  # trying to create an default instance of the type being used.
+                ),
                 float("-inf"),
             )
         )
@@ -215,6 +233,42 @@ class AdjacencyList(_Graphable[_T]):
         )
 
         return self._build_path(record, start, end)
+
+    def minimum_spanning_tree(self) -> AdjacencyList[_T]:
+        if self._type:
+            raise ValueError(
+                "Cannot create Minimum Spanning Tree out of a directed graph"
+            )
+
+        start: typing.Optional[_Vertex[_T]] = None
+        for key in self.adjacency_list:
+            start = key
+            break
+
+        assert start is not None, "No Minimum Spanning Tree for empty graph"
+
+        visited: set[_Vertex[_T]] = set([start])
+        spanning_tree: AdjacencyList[_T] = AdjacencyList(directed=self._type)
+        pQueue: PriorityQueue[_Edge[_T]] = PriorityQueue(
+            [edge for edge in self.adjacency_list[start]],
+            key=lambda a, b: operator.lt(a.weight, b.weight),
+        )
+
+        while pQueue:
+            src, dst, weight = pQueue.dequeue()
+
+            if dst in visited:
+                continue
+            visited.add(dst)
+
+            spanning_tree.add(dst, src, weight)
+            for edge in self.adjacency_list[dst]:
+                pQueue.enqueue(edge)
+
+        return spanning_tree
+
+    def __iter__(self) -> typing.Iterator[_Vertex[_T]]:
+        yield from self.adjacency_list.keys()
 
     def __str__(self) -> str:
         msg = ["{\n"]
