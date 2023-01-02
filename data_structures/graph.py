@@ -101,6 +101,9 @@ class _Graphable(typing.Generic[_T]):
     ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
         ...
 
+    def minimum_spanning_tree(self) -> AdjacencyList[_T]:
+        ...
+
 
 class AdjacencyList(_Graphable[_T]):
     def __init__(
