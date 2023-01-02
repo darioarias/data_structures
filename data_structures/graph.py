@@ -234,6 +234,42 @@ class AdjacencyList(_Graphable[_T]):
 
         return self._build_path(record, start, end)
 
+    def minimum_spanning_tree(self) -> AdjacencyList[_T]:
+        if self._type:
+            raise ValueError(
+                "Cannot create Minimum Spanning Tree out of a directed graph"
+            )
+
+        start: typing.Optional[_Vertex[_T]] = None
+        for key in self.adjacency_list:
+            start = key
+            break
+
+        assert start is not None, "No Minimum Spanning Tree for empty graph"
+
+        visited: set[_Vertex[_T]] = set([start])
+        spanning_tree: AdjacencyList[_T] = AdjacencyList(directed=self._type)
+        pQueue: PriorityQueue[_Edge[_T]] = PriorityQueue(
+            [edge for edge in self.adjacency_list[start]],
+            key=lambda a, b: operator.lt(a.weight, b.weight),
+        )
+
+        while pQueue:
+            src, dst, weight = pQueue.dequeue()
+
+            if dst in visited:
+                continue
+            visited.add(dst)
+
+            spanning_tree.add(dst, src, weight)
+            for edge in self.adjacency_list[dst]:
+                pQueue.enqueue(edge)
+
+        return spanning_tree
+
+    def __iter__(self) -> typing.Iterator[_Vertex[_T]]:
+        yield from self.adjacency_list.keys()
+
     def __str__(self) -> str:
         msg = ["{\n"]
         space = "  " * 2
