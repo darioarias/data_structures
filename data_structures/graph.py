@@ -222,7 +222,7 @@ class AdjacencyList(_Graphable[_T]):
                 if neighbor not in visited:
                     e_src, e_dst, e_wgt = neighbor
                     edge = _Edge(e_src, e_dst, e_wgt + weight)
-                    setattr(edge, "estimate", heuristic(e_dst._data, end._data))
+                    setattr(edge, "estimate", heuristic(e_dst.data, end.data))
                     queue.enqueue(edge)
 
         return record
@@ -240,10 +240,10 @@ class AdjacencyList(_Graphable[_T]):
             if cost == float("-inf"):
                 if len(path) == 0:
                     raise ValueError(f"No path exists between {start} and {end}")
-                path.append((start._data, 0))
+                path.append((start.data, 0))
                 return reversed(path)
 
-            path.append((end._data, cost))
+            path.append((end.data, cost))
             end = current
 
     def dijkstra(
