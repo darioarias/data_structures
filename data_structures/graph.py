@@ -104,6 +104,14 @@ class _Graphable(typing.Generic[_T]):
     def minimum_spanning_tree(self) -> AdjacencyList[_T]:
         ...
 
+    def a_star(
+        self,
+        start: _Vertex[_T],
+        end: _Vertex[_T],
+        __heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
+    ) -> typing.Iterable[tuple[_T, float]]:
+        ...
+
 
 class AdjacencyList(_Graphable[_T]):
     def __init__(
