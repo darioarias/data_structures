@@ -239,13 +239,7 @@ class AdjacencyList(_Graphable[_T]):
             raise ValueError(f"No path exists between {start} and {end}")
 
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
-            PriorityQueue(
-                [_Edge(start, start, 0)],
-                key=lambda a, b: operator.lt(a.weight, b.weight),
-            ),
-            set(),
-            start,
-            end,
+            visited=set(), start=start, end=end
         )
 
         return self._build_path(record, start, end)
@@ -288,50 +282,13 @@ class AdjacencyList(_Graphable[_T]):
         start: _Vertex[_T],
         end: _Vertex[_T],
         __heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
-    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+    ) -> typing.Iterable[tuple[_T, float]]:
 
-        pqueue = PriorityQueue(
-            [_Edge(start, start, 0)],
-            key=lambda a, b: operator.lt(
-                a.weight + getattr(a, "estimate"), b.weight + getattr(b, "estimate")
-            ),
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
+            visited=set(), start=start, end=end, heuristic=__heuristic
         )
 
-        visited: set[_Vertex[_T]] = set()
-
-        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
-            lambda: (
-                _Vertex(
-                    data=type(
-                        _T.__class__
-                    )  # trying to create an default instance of the type being used.
-                ),
-                float("-inf"),
-            )
-        )
-
-        while pqueue:
-            src, dst, cost = pqueue.dequeue()
-
-            if record[dst][1] == float("-inf") and dst != start:
-                record[dst] = (src, cost)
-
-            if dst == end:
-                return self._build_path(record, start, end)
-
-            for _, e_dst, e_cost in self.adjacency_list[dst]:
-                if e_dst not in visited:
-                    visited.add(e_dst)
-
-                    edge = _Edge(dst, e_dst, cost + e_cost)
-                    setattr(
-                        edge,
-                        "estimate",
-                        __heuristic(e_dst._data, end._data),
-                    )
-                    pqueue.enqueue(edge)
-
-        raise ValueError(f"No path exists between {start} and {end}")
+        return self._build_path(record, start, end)
 
     def __iter__(self) -> typing.Iterator[_Vertex[_T]]:
         yield from self.adjacency_list.keys()
