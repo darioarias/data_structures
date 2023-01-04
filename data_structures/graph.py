@@ -196,6 +196,7 @@ class AdjacencyList(_Graphable[_T]):
 
         while queue:
             src, dst, weight = queue.dequeue()
+            visited.add(dst)
 
             if record[dst][1] == float("-inf") and dst != start:
                 record[dst] = (src, weight)
@@ -205,9 +206,10 @@ class AdjacencyList(_Graphable[_T]):
 
             for neighbor in self.adjacency_list[dst]:
                 if neighbor not in visited:
-                    visited.add(neighbor)
                     e_src, e_dst, e_wgt = neighbor
-                    queue.enqueue(_Edge(e_src, e_dst, e_wgt + weight))
+                    edge = _Edge(e_src, e_dst, e_wgt + weight)
+                    setattr(edge, "estimate", heuristic(e_dst._data, end._data))
+                    queue.enqueue(edge)
 
         return record
 
