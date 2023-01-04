@@ -13,6 +13,10 @@ class _Vertex(typing.Generic[_T]):
     def __init__(self, data: _T) -> None:
         self._data = data
 
+    @property
+    def data(self) -> _T:
+        return self._data
+
     def __iter__(self) -> typing.Iterator[_T]:
         yield self._data
 
