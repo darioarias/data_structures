@@ -173,6 +173,7 @@ class AdjacencyList(_Graphable[_T]):
         queue: PriorityQueue[_Edge[_T]],
         visited: set[_Edge[_T]],
         start: _Vertex[_T],
+        end: _Vertex[_T],
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
@@ -190,8 +191,9 @@ class AdjacencyList(_Graphable[_T]):
 
             if record[dst][1] == float("-inf") and dst != start:
                 record[dst] = (src, weight)
-            elif record[dst][1] + weight < record[dst][1]:
-                record[dst] = (src, record[dst][1] + weight)
+
+            if dst == end:
+                break
 
             for neighbor in self.adjacency_list[dst]:
                 if neighbor not in visited:
