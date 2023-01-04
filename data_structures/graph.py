@@ -173,6 +173,7 @@ class AdjacencyList(_Graphable[_T]):
         queue: PriorityQueue[_Edge[_T]],
         visited: set[_Edge[_T]],
         start: _Vertex[_T],
+        end: _Vertex[_T],
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
@@ -190,8 +191,9 @@ class AdjacencyList(_Graphable[_T]):
 
             if record[dst][1] == float("-inf") and dst != start:
                 record[dst] = (src, weight)
-            elif record[dst][1] + weight < record[dst][1]:
-                record[dst] = (src, record[dst][1] + weight)
+
+            if dst == end:
+                break
 
             for neighbor in self.adjacency_list[dst]:
                 if neighbor not in visited:
@@ -206,23 +208,23 @@ class AdjacencyList(_Graphable[_T]):
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]],
         start: _Vertex[_T],
         end: _Vertex[_T],
-    ) -> typing.Iterator[tuple[_Vertex[_T], float]]:
-        path: list[tuple[_Vertex, float]] = []
+    ) -> typing.Iterator[tuple[_T, float]]:
+        path: list[tuple[_T, float]] = []
 
         while True:
             current, cost = record[end]
             if cost == float("-inf"):
                 if len(path) == 0:
                     raise ValueError(f"No path exists between {start} and {end}")
-                path.append((start, 0))
+                path.append((start._data, 0))
                 return reversed(path)
 
-            path.append((end, cost))
+            path.append((end._data, cost))
             end = current
 
     def dijkstra(
         self, start: _Vertex[_T], end: _Vertex[_T]
-    ) -> typing.Iterator[tuple[_Vertex[_T], float]]:
+    ) -> typing.Iterator[tuple[_T, float]]:
         if start not in self.adjacency_list or end not in self.adjacency_list:
             raise ValueError(f"No path exists between {start} and {end}")
 
@@ -233,6 +235,7 @@ class AdjacencyList(_Graphable[_T]):
             ),
             set(),
             start,
+            end,
         )
 
         return self._build_path(record, start, end)
