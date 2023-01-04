@@ -183,6 +183,9 @@ class AdjacencyList(_Graphable[_T]):
         end: _Vertex[_T],
         heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
+        if start not in self.adjacency_list or end not in self.adjacency_list:
+            raise ValueError(f"No path exists between {start} and {end}")
+
         queue: PriorityQueue[_Edge[_T]] = PriorityQueue(
             [_Edge(start, start, 0.0)],
             key=lambda a, b: operator.lt(
@@ -243,9 +246,6 @@ class AdjacencyList(_Graphable[_T]):
     def dijkstra(
         self, start: _Vertex[_T], end: _Vertex[_T]
     ) -> typing.Iterator[tuple[_T, float]]:
-        if start not in self.adjacency_list or end not in self.adjacency_list:
-            raise ValueError(f"No path exists between {start} and {end}")
-
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
             visited=set(), start=start, end=end
         )
