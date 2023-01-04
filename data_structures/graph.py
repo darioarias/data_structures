@@ -3,7 +3,7 @@ from __future__ import annotations
 import enum
 import operator
 import typing
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 
 from .priority_queue import PriorityQueue
 
@@ -73,8 +73,10 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
 
 class _Graphable(typing.Generic[_T]):
-    def __init__(self, directed: bool = True) -> None:
-        self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = {}
+    def __init__(
+        self,
+        directed: bool = True,
+    ) -> None:
         self._type = directed
 
     def create_vertex(self, data: _T) -> _Vertex[_T]:
@@ -99,8 +101,31 @@ class _Graphable(typing.Generic[_T]):
     ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
         ...
 
+    def minimum_spanning_tree(self) -> AdjacencyList[_T]:
+        ...
+
+    def a_star(
+        self,
+        start: _Vertex[_T],
+        end: _Vertex[_T],
+        __heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
+    ) -> typing.Iterable[tuple[_T, float]]:
+        ...
+
 
 class AdjacencyList(_Graphable[_T]):
+    def __init__(
+        self,
+        __items: typing.Optional[typing.Union[list[_T], typing.Iterable[_T]]] = None,
+        directed: bool = True,
+    ) -> None:
+        super().__init__(directed)
+        self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = OrderedDict()
+
+        if __items is not None:
+            for item in __items:
+                self.create_vertex(item)
+
     def create_vertex(self, data: _T) -> _Vertex[_T]:
         vertex = _Vertex(data=data)
 
@@ -153,33 +178,46 @@ class AdjacencyList(_Graphable[_T]):
 
     def _visit_vertecies(
         self,
-        queue: PriorityQueue[_Edge[_T]],
-        visited: set[_Edge[_T]],
+        visited: set[_Vertex[_T]],
         start: _Vertex[_T],
+        end: _Vertex[_T],
+        heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
+        queue: PriorityQueue[_Edge[_T]] = PriorityQueue(
+            [_Edge(start, start, 0.0)],
+            key=lambda a, b: operator.lt(
+                a.weight + getattr(a, "estimate", 0.0),
+                b.weight + getattr(b, "estimate", 0.0),
+            ),
+        )
+
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
-                _Vertex(data=type(_T.__class__)),
+                _Vertex(
+                    data=type(
+                        _T.__class__
+                    )  # trying to create an default instance of the type being used.
+                ),
                 float("-inf"),
             )
         )
 
         while queue:
-            edge = queue.dequeue()
-            assert edge is not None
-
-            src, dst, weight = edge
+            src, dst, weight = queue.dequeue()
+            visited.add(dst)
 
             if record[dst][1] == float("-inf") and dst != start:
                 record[dst] = (src, weight)
-            elif record[dst][1] + weight < record[dst][1]:
-                record[dst] = (src, record[dst][1] + weight)
+
+            if dst == end:
+                break
 
             for neighbor in self.adjacency_list[dst]:
                 if neighbor not in visited:
-                    visited.add(neighbor)
                     e_src, e_dst, e_wgt = neighbor
-                    queue.enqueue(_Edge(e_src, e_dst, e_wgt + weight))
+                    edge = _Edge(e_src, e_dst, e_wgt + weight)
+                    setattr(edge, "estimate", heuristic(e_dst._data, end._data))
+                    queue.enqueue(edge)
 
         return record
 
@@ -188,36 +226,80 @@ class AdjacencyList(_Graphable[_T]):
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]],
         start: _Vertex[_T],
         end: _Vertex[_T],
-    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
-        path: list[tuple[_Vertex, float]] = []
+    ) -> typing.Iterator[tuple[_T, float]]:
+        path: list[tuple[_T, float]] = []
 
         while True:
             current, cost = record[end]
             if cost == float("-inf"):
                 if len(path) == 0:
                     raise ValueError(f"No path exists between {start} and {end}")
-                path.append((start, 0))
+                path.append((start._data, 0))
                 return reversed(path)
 
-            path.append((end, cost))
+            path.append((end._data, cost))
             end = current
 
     def dijkstra(
         self, start: _Vertex[_T], end: _Vertex[_T]
-    ) -> typing.Iterable[tuple[_Vertex[_T], float]]:
+    ) -> typing.Iterator[tuple[_T, float]]:
         if start not in self.adjacency_list or end not in self.adjacency_list:
             raise ValueError(f"No path exists between {start} and {end}")
 
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
-            PriorityQueue(
-                [_Edge(start, start, 0)],
-                key=lambda a, b: operator.lt(a.weight, b.weight),
-            ),
-            set(),
-            start,
+            visited=set(), start=start, end=end
         )
 
         return self._build_path(record, start, end)
+
+    def minimum_spanning_tree(self) -> AdjacencyList[_T]:
+        if self._type:
+            raise ValueError(
+                "Cannot create Minimum Spanning Tree out of a directed graph"
+            )
+
+        start: typing.Optional[_Vertex[_T]] = None
+        for key in self.adjacency_list:
+            start = key
+            break
+
+        assert start is not None, "No Minimum Spanning Tree for empty graph"
+
+        visited: set[_Vertex[_T]] = set([start])
+        spanning_tree: AdjacencyList[_T] = AdjacencyList(directed=self._type)
+        pQueue: PriorityQueue[_Edge[_T]] = PriorityQueue(
+            [edge for edge in self.adjacency_list[start]],
+            key=lambda a, b: operator.lt(a.weight, b.weight),
+        )
+
+        while pQueue:
+            src, dst, weight = pQueue.dequeue()
+
+            if dst in visited:
+                continue
+            visited.add(dst)
+
+            spanning_tree.add(dst, src, weight)
+            for edge in self.adjacency_list[dst]:
+                pQueue.enqueue(edge)
+
+        return spanning_tree
+
+    def a_star(
+        self,
+        start: _Vertex[_T],
+        end: _Vertex[_T],
+        __heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
+    ) -> typing.Iterable[tuple[_T, float]]:
+
+        record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
+            visited=set(), start=start, end=end, heuristic=__heuristic
+        )
+
+        return self._build_path(record, start, end)
+
+    def __iter__(self) -> typing.Iterator[_Vertex[_T]]:
+        yield from self.adjacency_list.keys()
 
     def __str__(self) -> str:
         msg = ["{\n"]
