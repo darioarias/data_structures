@@ -270,13 +270,13 @@ class AdjacencyList(_Graphable[_T]):
 
         visited: set[_Vertex[_T]] = set([start])
         spanning_tree: AdjacencyList[_T] = AdjacencyList(directed=self._type)
-        pQueue: PriorityQueue[_Edge[_T]] = PriorityQueue(
+        queue: PriorityQueue[_Edge[_T]] = PriorityQueue(
             [edge for edge in self.adjacency_list[start]],
             key=lambda a, b: operator.lt(a.weight, b.weight),
         )
 
-        while pQueue:
-            src, dst, weight = pQueue.dequeue()
+        while queue:
+            src, dst, weight = queue.dequeue()
 
             if dst in visited:
                 continue
@@ -284,7 +284,7 @@ class AdjacencyList(_Graphable[_T]):
 
             spanning_tree.add(dst, src, weight)
             for edge in self.adjacency_list[dst]:
-                pQueue.enqueue(edge)
+                queue.enqueue(edge)
 
         return spanning_tree
 
