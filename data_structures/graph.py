@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import enum
 import operator
 import typing
 from collections import OrderedDict, defaultdict
@@ -13,6 +12,10 @@ _T = typing.TypeVar("_T")
 class _Vertex(typing.Generic[_T]):
     def __init__(self, data: _T) -> None:
         self._data = data
+
+    @property
+    def data(self) -> _T:
+        return self._data
 
     def __iter__(self) -> typing.Iterator[_T]:
         yield self._data
@@ -35,12 +38,12 @@ class _Vertex(typing.Generic[_T]):
 
 class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
     def __new__(
-        cls, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0
+        cls, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0.0
     ) -> _Edge[_T]:
         return tuple.__new__(cls, (source, destination, weight))
 
     def __init__(
-        self, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0
+        self, source: _Vertex[_T], destination: _Vertex[_T], weight: float = 0.0
     ) -> None:
         self.source: _Vertex[_T] = source
         self.destination: _Vertex[_T] = destination
@@ -183,6 +186,9 @@ class AdjacencyList(_Graphable[_T]):
         end: _Vertex[_T],
         heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
     ) -> dict[_Vertex[_T], tuple[_Vertex[_T], float]]:
+        if start not in self.adjacency_list or end not in self.adjacency_list:
+            raise ValueError(f"No path exists between {start} and {end}")
+
         queue: PriorityQueue[_Edge[_T]] = PriorityQueue(
             [_Edge(start, start, 0.0)],
             key=lambda a, b: operator.lt(
@@ -216,7 +222,7 @@ class AdjacencyList(_Graphable[_T]):
                 if neighbor not in visited:
                     e_src, e_dst, e_wgt = neighbor
                     edge = _Edge(e_src, e_dst, e_wgt + weight)
-                    setattr(edge, "estimate", heuristic(e_dst._data, end._data))
+                    setattr(edge, "estimate", heuristic(e_dst.data, end.data))
                     queue.enqueue(edge)
 
         return record
@@ -234,18 +240,15 @@ class AdjacencyList(_Graphable[_T]):
             if cost == float("-inf"):
                 if len(path) == 0:
                     raise ValueError(f"No path exists between {start} and {end}")
-                path.append((start._data, 0))
+                path.append((start.data, 0))
                 return reversed(path)
 
-            path.append((end._data, cost))
+            path.append((end.data, cost))
             end = current
 
     def dijkstra(
         self, start: _Vertex[_T], end: _Vertex[_T]
     ) -> typing.Iterator[tuple[_T, float]]:
-        if start not in self.adjacency_list or end not in self.adjacency_list:
-            raise ValueError(f"No path exists between {start} and {end}")
-
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
             visited=set(), start=start, end=end
         )
@@ -267,13 +270,13 @@ class AdjacencyList(_Graphable[_T]):
 
         visited: set[_Vertex[_T]] = set([start])
         spanning_tree: AdjacencyList[_T] = AdjacencyList(directed=self._type)
-        pQueue: PriorityQueue[_Edge[_T]] = PriorityQueue(
+        queue: PriorityQueue[_Edge[_T]] = PriorityQueue(
             [edge for edge in self.adjacency_list[start]],
             key=lambda a, b: operator.lt(a.weight, b.weight),
         )
 
-        while pQueue:
-            src, dst, weight = pQueue.dequeue()
+        while queue:
+            src, dst, weight = queue.dequeue()
 
             if dst in visited:
                 continue
@@ -281,7 +284,7 @@ class AdjacencyList(_Graphable[_T]):
 
             spanning_tree.add(dst, src, weight)
             for edge in self.adjacency_list[dst]:
-                pQueue.enqueue(edge)
+                queue.enqueue(edge)
 
         return spanning_tree
 
