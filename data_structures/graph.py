@@ -236,7 +236,7 @@ class AdjacencyList(_Graphable[_T]):
 
         while True:
             current, cost = record[end]
-            if cost == float("-inf"):
+            if cost == float("inf"):
                 if len(path) == 0:
                     raise ValueError(f"No path exists between {start} and {end}")
                 path.append((start.data, 0))
