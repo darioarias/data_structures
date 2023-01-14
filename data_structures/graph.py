@@ -180,7 +180,6 @@ class AdjacencyList(_Graphable[_T]):
 
     def _visit_vertecies(
         self,
-        visited: set[_Vertex[_T]],
         start: _Vertex[_T],
         end: _Vertex[_T],
         heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
@@ -195,6 +194,7 @@ class AdjacencyList(_Graphable[_T]):
                 b.weight + getattr(b, "estimate", 0.0),
             ),
         )
+        visited: set[_Vertex[_T]] = set([start])
 
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
@@ -203,27 +203,27 @@ class AdjacencyList(_Graphable[_T]):
                         _T.__class__
                     )  # trying to create an default instance of the type being used.
                 ),
-                float("-inf"),
+                float("inf"),
             )
         )
 
         while queue:
-            src, dst, weight = queue.dequeue()
-            visited.add(dst)
-
-            if record[dst][1] == float("-inf") and dst != start:
-                record[dst] = (src, weight)
+            _, dst, weight = queue.dequeue()
 
             if dst == end:
                 break
 
             for neighbor in self.adjacency_list[dst]:
-                if neighbor not in visited:
-                    e_src, e_dst, e_wgt = neighbor
+                e_src, e_dst, e_wgt = neighbor
+                if e_dst != start:
+                    new_cost = weight + e_wgt
+                    if record[e_dst][1] == float("inf") or new_cost < record[e_dst][1]:
+                        record[e_dst] = (e_src, new_cost)
+                if e_dst not in visited:
+                    visited.add(e_dst)
                     edge = _Edge(e_src, e_dst, e_wgt + weight)
                     setattr(edge, "estimate", heuristic(e_dst.data, end.data))
                     queue.enqueue(edge)
-
         return record
 
     def _build_path(
