@@ -309,7 +309,10 @@ class AdjacencyList(_Graphable[_T]):
         inner_msg = []
 
         def edges_to_str(items: list[_Edge[_T]]) -> typing.Iterator[str]:
-            return (f"{str(edge.destination)}, cost: {edge.weight}" for edge in items)
+            return (
+                f"{self.adt_to_str(edge.destination.data)}, cost: {edge.weight}"
+                for edge in items
+            )
 
         for key in self.adjacency_list:
             new_line = f"\n{space * 2}  "
@@ -317,7 +320,7 @@ class AdjacencyList(_Graphable[_T]):
             inner_str += f"\n{space*2}]" if inner_str else "]"
             if inner_str != "]":
                 inner_str = f"{new_line}{inner_str}"
-            inner_msg.append(f"{space}{str(key)}: [{inner_str}")
+            inner_msg.append(f"{space}{self.adt_to_str(key.data)}: [{inner_str}")
 
         msg.append("\n".join(inner_msg))
         msg.append("\n}")
