@@ -325,3 +325,22 @@ class AdjacencyList(_Graphable[_T]):
         msg.append("\n".join(inner_msg))
         msg.append("\n}")
         return "".join(msg)
+
+    def __getitem__(self, __item: int | str) -> _Vertex[_T]:
+        if isinstance(__item, int):
+            __item = len(self.adjacency_list) + __item if __item < 0 else __item
+            for idx, vertex in enumerate(self.adjacency_list):
+                if idx == __item:
+                    return vertex
+        elif isinstance(__item, str):
+            for vertex in self.adjacency_list:
+                if self.adt_to_str(vertex.data) == __item:
+                    return vertex
+        _msg = f""
+        if isinstance(__item, str):
+            _msg = f"{__item!r} does not exists"
+        elif isinstance(__item, int):
+            _msg = f"Index out of bound"
+        else:
+            _msg = f"{type(self).__name__}'s __getitem__ does not support type {type(__item).__name__}"
+        raise IndexError(_msg)
