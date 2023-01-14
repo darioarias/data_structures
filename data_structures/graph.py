@@ -119,8 +119,9 @@ class AdjacencyList(_Graphable[_T]):
         self,
         __items: typing.Optional[typing.Union[list[_T], typing.Iterable[_T]]] = None,
         directed: bool = True,
+        adt_to_str: typing.Callable[[_T], str] = lambda value: str(value),
     ) -> None:
-        super().__init__(directed)
+        super().__init__(directed, adt_to_str)
         self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = OrderedDict()
 
         if __items is not None:
