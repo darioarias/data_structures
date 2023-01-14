@@ -180,7 +180,6 @@ class AdjacencyList(_Graphable[_T]):
 
     def _visit_vertecies(
         self,
-        visited: set[_Vertex[_T]],
         start: _Vertex[_T],
         end: _Vertex[_T],
         heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
@@ -195,6 +194,7 @@ class AdjacencyList(_Graphable[_T]):
                 b.weight + getattr(b, "estimate", 0.0),
             ),
         )
+        visited: set[_Vertex[_T]] = set([start])
 
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = defaultdict(
             lambda: (
@@ -203,27 +203,27 @@ class AdjacencyList(_Graphable[_T]):
                         _T.__class__
                     )  # trying to create an default instance of the type being used.
                 ),
-                float("-inf"),
+                float("inf"),
             )
         )
 
         while queue:
-            src, dst, weight = queue.dequeue()
-            visited.add(dst)
-
-            if record[dst][1] == float("-inf") and dst != start:
-                record[dst] = (src, weight)
+            _, dst, weight = queue.dequeue()
 
             if dst == end:
                 break
 
             for neighbor in self.adjacency_list[dst]:
-                if neighbor not in visited:
-                    e_src, e_dst, e_wgt = neighbor
+                e_src, e_dst, e_wgt = neighbor
+                if e_dst != start:
+                    new_cost = weight + e_wgt
+                    if record[e_dst][1] == float("inf") or new_cost < record[e_dst][1]:
+                        record[e_dst] = (e_src, new_cost)
+                if e_dst not in visited:
+                    visited.add(e_dst)
                     edge = _Edge(e_src, e_dst, e_wgt + weight)
                     setattr(edge, "estimate", heuristic(e_dst.data, end.data))
                     queue.enqueue(edge)
-
         return record
 
     def _build_path(
@@ -236,7 +236,7 @@ class AdjacencyList(_Graphable[_T]):
 
         while True:
             current, cost = record[end]
-            if cost == float("-inf"):
+            if cost == float("inf"):
                 if len(path) == 0:
                     raise ValueError(f"No path exists between {start} and {end}")
                 path.append((start.data, 0))
@@ -249,9 +249,8 @@ class AdjacencyList(_Graphable[_T]):
         self, start: _Vertex[_T], end: _Vertex[_T]
     ) -> typing.Iterator[tuple[_T, float]]:
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
-            visited=set(), start=start, end=end
+            start=start, end=end
         )
-
         return self._build_path(record, start, end)
 
     def minimum_spanning_tree(self) -> AdjacencyList[_T]:
@@ -293,11 +292,9 @@ class AdjacencyList(_Graphable[_T]):
         end: _Vertex[_T],
         __heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
     ) -> typing.Iterable[tuple[_T, float]]:
-
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
-            visited=set(), start=start, end=end, heuristic=__heuristic
+            start=start, end=end, heuristic=__heuristic
         )
-
         return self._build_path(record, start, end)
 
     def __iter__(self) -> typing.Iterator[_Vertex[_T]]:
