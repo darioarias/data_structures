@@ -249,9 +249,8 @@ class AdjacencyList(_Graphable[_T]):
         self, start: _Vertex[_T], end: _Vertex[_T]
     ) -> typing.Iterator[tuple[_T, float]]:
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
-            visited=set(), start=start, end=end
+            start=start, end=end
         )
-
         return self._build_path(record, start, end)
 
     def minimum_spanning_tree(self) -> AdjacencyList[_T]:
