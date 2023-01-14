@@ -76,11 +76,9 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
 
 class _Graphable(typing.Generic[_T]):
-    def __init__(
-        self,
-        directed: bool = True,
-    ) -> None:
+    def __init__(self, directed: bool, adt_to_str: typing.Callable[[_T], str]) -> None:
         self._type = directed
+        self.adt_to_str = adt_to_str
 
     def create_vertex(self, data: _T) -> _Vertex[_T]:
         return _Vertex(data)
