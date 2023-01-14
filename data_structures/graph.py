@@ -76,11 +76,9 @@ class _Edge(tuple["_Vertex[_T]", "_Vertex[_T]", float]):
 
 
 class _Graphable(typing.Generic[_T]):
-    def __init__(
-        self,
-        directed: bool = True,
-    ) -> None:
+    def __init__(self, directed: bool, adt_to_str: typing.Callable[[_T], str]) -> None:
         self._type = directed
+        self.adt_to_str = adt_to_str
 
     def create_vertex(self, data: _T) -> _Vertex[_T]:
         return _Vertex(data)
@@ -121,8 +119,9 @@ class AdjacencyList(_Graphable[_T]):
         self,
         __items: typing.Optional[typing.Union[list[_T], typing.Iterable[_T]]] = None,
         directed: bool = True,
+        adt_to_str: typing.Callable[[_T], str] = lambda value: str(value),
     ) -> None:
-        super().__init__(directed)
+        super().__init__(directed, adt_to_str)
         self.adjacency_list: dict[_Vertex[_T], list[_Edge[_T]]] = OrderedDict()
 
         if __items is not None:
@@ -310,7 +309,10 @@ class AdjacencyList(_Graphable[_T]):
         inner_msg = []
 
         def edges_to_str(items: list[_Edge[_T]]) -> typing.Iterator[str]:
-            return (f"{str(edge.destination)}, cost: {edge.weight}" for edge in items)
+            return (
+                f"{self.adt_to_str(edge.destination.data)}, cost: {edge.weight}"
+                for edge in items
+            )
 
         for key in self.adjacency_list:
             new_line = f"\n{space * 2}  "
@@ -318,8 +320,27 @@ class AdjacencyList(_Graphable[_T]):
             inner_str += f"\n{space*2}]" if inner_str else "]"
             if inner_str != "]":
                 inner_str = f"{new_line}{inner_str}"
-            inner_msg.append(f"{space}{str(key)}: [{inner_str}")
+            inner_msg.append(f"{space}{self.adt_to_str(key.data)}: [{inner_str}")
 
         msg.append("\n".join(inner_msg))
         msg.append("\n}")
         return "".join(msg)
+
+    def __getitem__(self, __item: int | str) -> _Vertex[_T]:
+        if isinstance(__item, int):
+            __item = len(self.adjacency_list) + __item if __item < 0 else __item
+            for idx, vertex in enumerate(self.adjacency_list):
+                if idx == __item:
+                    return vertex
+        elif isinstance(__item, str):
+            for vertex in self.adjacency_list:
+                if self.adt_to_str(vertex.data) == __item:
+                    return vertex
+        _msg = f""
+        if isinstance(__item, str):
+            _msg = f"{__item!r} does not exists"
+        elif isinstance(__item, int):
+            _msg = f"Index out of bound"
+        else:
+            _msg = f"{type(self).__name__}'s __getitem__ does not support type {type(__item).__name__}"
+        raise IndexError(_msg)
