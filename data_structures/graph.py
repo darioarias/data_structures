@@ -292,11 +292,9 @@ class AdjacencyList(_Graphable[_T]):
         end: _Vertex[_T],
         __heuristic: typing.Callable[[_T, _T], float] = lambda a, b: 0.0,
     ) -> typing.Iterable[tuple[_T, float]]:
-
         record: dict[_Vertex[_T], tuple[_Vertex[_T], float]] = self._visit_vertecies(
-            visited=set(), start=start, end=end, heuristic=__heuristic
+            start=start, end=end, heuristic=__heuristic
         )
-
         return self._build_path(record, start, end)
 
     def __iter__(self) -> typing.Iterator[_Vertex[_T]]:
